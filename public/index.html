@@ -43,7 +43,7 @@
             background: radial-gradient(circle at center, #11111d 0%, #050507 100%);
         }
 
-        /* Glitter shimmer */
+        /* Subtle glitter shimmer */
         .bg-container::after {
             content: "";
             position: absolute;
@@ -53,14 +53,14 @@
             pointer-events: none;
         }
 
-        /* FIXED: Faster bubbles with higher start point */
+        /* Fast-spawning bubbles */
         .bubble {
             position: absolute;
-            bottom: -12vh; 
+            bottom: -10vh; 
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255,255,255,0.05);
             border-radius: 50%;
-            animation: floatUp 8s infinite ease-in;
+            animation: floatUp 7s infinite ease-in;
             filter: blur(2px);
             opacity: 0;
         }
@@ -91,7 +91,7 @@
         #clock { font-size: 4.5vh; font-weight: 800; font-variant-numeric: tabular-nums; }
         #date { font-size: 1.4vh; opacity: 0.4; text-transform: uppercase; letter-spacing: 5px; }
 
-        /* --- SEARCH & LOGO --- */
+        /* --- SEARCH BOX --- */
         .logo { font-size: 11vh; font-weight: 900; margin-bottom: 25px; letter-spacing: -5px; }
 
         .search-wrapper {
@@ -117,36 +117,27 @@
             text-transform: uppercase;
         }
 
-        /* --- QUICK SEARCH ICONS --- */
-        .quick-links {
-            display: flex;
-            gap: 20px;
-            margin-top: 35px;
-        }
-
+        /* --- QUICK ICONS --- */
+        .quick-links { display: flex; gap: 20px; margin-top: 35px; }
         .quick-btn {
             width: 55px; height: 55px;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: 0.3s ease;
+            cursor: pointer; transition: 0.3s;
         }
-
-        .quick-btn:hover {
-            background: rgba(255,255,255,0.15);
-            transform: translateY(-8px);
-        }
-
+        .quick-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-8px); }
         .quick-btn img { width: 28px; height: 28px; }
 
-        /* --- EXTRAS --- */
+        /* --- IFRAME WINDOW --- */
         #iframeWindow {
             display: none; position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             border: none; z-index: 1000; background: white;
         }
 
+        /* Raw Games Folder Button */
         .folder-btn {
             position: absolute; bottom: 30px; right: 30px;
             font-size: 30px; background: var(--panel-bg);
@@ -167,7 +158,7 @@
     <div class="logo">GEMINI</div>
 
     <div class="search-wrapper">
-        <input type="text" id="urlInput" placeholder="Where to next?">
+        <input type="text" id="urlInput" placeholder="Search or enter URL...">
         <button id="searchButton" onclick="launch()">Explore</button>
     </div>
 
@@ -181,7 +172,7 @@
 
     <iframe id="iframeWindow"></iframe>
 
-    <a href="/RawGames" class="folder-btn" title="Raw Games Folder">📂</a>
+    <a href="/RawGames" class="folder-btn">📂</a>
 
     <script>
         // BUBBLE GENERATOR - Instant population
@@ -193,8 +184,8 @@
             bubble.style.width = size;
             bubble.style.height = size;
             bubble.style.left = Math.random() * 100 + "vw";
-            bubble.style.animationDelay = (Math.random() * 4) + "s";
-            bubble.style.animationDuration = (6 + Math.random() * 6) + "s";
+            bubble.style.animationDelay = (Math.random() * 3) + "s"; // Very fast start
+            bubble.style.animationDuration = (5 + Math.random() * 5) + "s";
             container.appendChild(bubble);
         }
 
@@ -207,20 +198,21 @@
         setInterval(updateClock, 1000); 
         updateClock();
 
-        // SEARCH LOGIC - Fixed DDG Error
+        // SEARCH LOGIC - Switched to Google for stability
         function launch() {
             const val = document.getElementById('urlInput').value.trim();
-            if(val) processSearch(val);
-        }
-
-        function processSearch(url) {
             const frame = document.getElementById('iframeWindow');
+            if(!val) return;
+
+            let url = val;
+
+            // If it's a search term, use Google
             if (!url.includes(".") || url.includes(" ")) {
-                // Using Lite version to bypass iframe security blocks
-                url = "https://lite.duckduckgo.com/lite/?q=" + encodeURIComponent(url);
+                url = "https://www.google.com/search?q=" + encodeURIComponent(url);
             } else if (!url.startsWith("http")) {
                 url = "https://" + url;
             }
+
             frame.style.display = "block";
             frame.src = __uv$config.prefix + __uv$config.encodeUrl(url);
         }

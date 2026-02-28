@@ -77,7 +77,7 @@
             transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex; flex-direction: column;
             padding: 100px 30px;
-            box-sizing: border-box; /* Prevents width issues */
+            box-sizing: border-box;
         }
 
         .sidebar.active { left: 0; }
@@ -89,7 +89,7 @@
         }
         .sidebar a:hover { opacity: 1; transform: translateX(10px); }
 
-        /* --- MAIN UI --- */
+        /* --- UI ELEMENTS --- */
         .trapezoid-header {
             position: absolute; top: 0; width: 650px; height: 105px;
             background: var(--panel-bg);
@@ -115,24 +115,18 @@
         .quick-btn { width: 55px; height: 55px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
         .quick-btn img { width: 28px; height: 28px; }
 
-        /* --- THE FIXED IFRAME & BACK BTN --- */
+        /* --- OVERLAYS --- */
         #backBtn { 
             display: none; position: fixed; top: 25px; right: 25px; 
             width: 50px; height: 50px; background: var(--panel-bg); 
             border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; 
             color: white; font-size: 24px; align-items: center; justify-content: center; 
-            cursor: pointer; z-index: 4000; /* Higher than everything */
+            cursor: pointer; z-index: 4000; 
         }
 
         #iframeWindow { 
-            display: none; 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100vw; height: 100vh; 
-            border: none; 
-            z-index: 3500; /* Higher than sidebar/menu */
-            background: white; 
-            margin: 0; padding: 0;
+            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            border: none; z-index: 3500; background: white; 
         }
     </style>
 </head>
@@ -145,6 +139,7 @@
 
     <div class="sidebar" id="sidebar">
         <a href="games.html"><span>🎮</span> Games</a>
+        <a href="partners.html"><span>🤝</span> Partners</a>
         <a href="#" onclick="toggleMenu()"><span>🏠</span> Home</a>
     </div>
 
@@ -216,9 +211,7 @@
             const menuBtn = document.getElementById('menuBtn');
             const sidebar = document.getElementById('sidebar');
             
-            // Force sidebar closed if open
-            sidebar.classList.remove('active');
-            
+            sidebar.classList.remove('active'); // Close menu on launch
             frame.style.display = "block";
             backBtn.style.display = "flex";
             menuBtn.style.display = "none"; 

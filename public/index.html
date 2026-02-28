@@ -173,7 +173,7 @@
         function quickLaunch(url) {
             const frame = document.getElementById('iframeWindow');
             if (!url.includes(".") || url.includes(" ")) {
-                url = "https://duckduckgo.com/?q=" + encodeURIComponent(url);
+                url = "https://html.duckduckgo.com/html/?q=" + encodeURIComponent(url);
             } else if (!url.startsWith("http")) {
                 url = "https://" + url;
             }

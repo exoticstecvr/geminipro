@@ -32,6 +32,7 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            width: 100vw;
             overflow: hidden;
             color: white;
         }
@@ -59,7 +60,7 @@
             100% { transform: translateY(-125vh) scale(0.5); opacity: 0; }
         }
 
-        /* --- SIDEBAR & MENU --- */
+        /* --- SIDEBAR --- */
         #menuBtn {
             position: fixed; top: 25px; left: 25px;
             font-size: 30px; cursor: pointer; z-index: 3000;
@@ -76,6 +77,7 @@
             transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex; flex-direction: column;
             padding: 100px 30px;
+            box-sizing: border-box; /* Prevents width issues */
         }
 
         .sidebar.active { left: 0; }
@@ -87,7 +89,7 @@
         }
         .sidebar a:hover { opacity: 1; transform: translateX(10px); }
 
-        /* --- UI --- */
+        /* --- MAIN UI --- */
         .trapezoid-header {
             position: absolute; top: 0; width: 650px; height: 105px;
             background: var(--panel-bg);
@@ -98,7 +100,6 @@
 
         #clock { font-size: 4.5vh; font-weight: 800; font-variant-numeric: tabular-nums; }
         #date { font-size: 1.4vh; opacity: 0.4; text-transform: uppercase; letter-spacing: 5px; }
-
         .logo { font-size: 11vh; font-weight: 900; margin-bottom: 25px; letter-spacing: -5px; }
 
         .search-wrapper {
@@ -114,16 +115,25 @@
         .quick-btn { width: 55px; height: 55px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
         .quick-btn img { width: 28px; height: 28px; }
 
-        /* BACK BUTTON */
+        /* --- THE FIXED IFRAME & BACK BTN --- */
         #backBtn { 
             display: none; position: fixed; top: 25px; right: 25px; 
             width: 50px; height: 50px; background: var(--panel-bg); 
             border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; 
             color: white; font-size: 24px; align-items: center; justify-content: center; 
-            cursor: pointer; z-index: 2000; 
+            cursor: pointer; z-index: 4000; /* Higher than everything */
         }
 
-        #iframeWindow { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none; z-index: 1000; background: white; }
+        #iframeWindow { 
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100vw; height: 100vh; 
+            border: none; 
+            z-index: 3500; /* Higher than sidebar/menu */
+            background: white; 
+            margin: 0; padding: 0;
+        }
     </style>
 </head>
 <body>
@@ -185,7 +195,6 @@
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // BROWSER CONTROLS
         function launch() {
             const val = document.getElementById('urlInput').value.trim();
             if(val) {
@@ -205,10 +214,14 @@
             const frame = document.getElementById('iframeWindow');
             const backBtn = document.getElementById('backBtn');
             const menuBtn = document.getElementById('menuBtn');
+            const sidebar = document.getElementById('sidebar');
+            
+            // Force sidebar closed if open
+            sidebar.classList.remove('active');
             
             frame.style.display = "block";
             backBtn.style.display = "flex";
-            menuBtn.style.display = "none"; // Hides menu when searching
+            menuBtn.style.display = "none"; 
             
             frame.src = __uv$config.prefix + __uv$config.encodeUrl(url);
         }
@@ -220,7 +233,7 @@
             
             frame.style.display = "none";
             backBtn.style.display = "none";
-            menuBtn.style.display = "block"; // Shows menu when returning
+            menuBtn.style.display = "block"; 
             
             frame.src = "";
         }

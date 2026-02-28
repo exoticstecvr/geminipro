@@ -10,7 +10,7 @@
             --panel-bg: rgba(10, 10, 15, 0.98);
             --card-bg: rgba(255, 255, 255, 0.03);
             --card-border: rgba(255, 255, 255, 0.1);
-            --glow: rgba(255, 215, 0, 0.1); /* Gold glow for GamingBrothers */
+            --glow: rgba(255, 215, 0, 0.15); /* Gold glow */
         }
 
         body {
@@ -21,8 +21,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center; /* Centered content vertically */
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
         /* --- BUBBLES --- */
@@ -49,9 +50,8 @@
         }
 
         /* --- UI ELEMENTS --- */
-        header { padding: 60px 0; text-align: center; }
-        .title { font-size: 5vh; font-weight: 900; letter-spacing: -2px; text-transform: uppercase; }
-        .subtitle { opacity: 0.4; letter-spacing: 3px; font-size: 1.2vh; margin-top: 10px; }
+        header { margin-bottom: 40px; text-align: center; }
+        .title { font-size: 6vh; font-weight: 900; letter-spacing: -2px; text-transform: uppercase; }
 
         .home-btn {
             position: fixed; top: 25px; left: 25px;
@@ -65,66 +65,49 @@
         }
         .home-btn:hover { background: white; color: black; transform: scale(1.1); }
 
-        /* --- PARTNERS GRID --- */
-        .grid {
-            display: flex;
-            justify-content: center;
-            gap: 25px; width: 90%; max-width: 1100px;
-            padding-bottom: 50px;
-            flex-wrap: wrap;
-        }
-
+        /* --- PARTNER CARD --- */
         .partner-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 24px;
-            padding: 40px;
+            border-radius: 30px;
+            padding: 50px;
             text-align: center;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-decoration: none;
             color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 350px;
-            box-shadow: 0 0 20px var(--glow);
+            width: 400px;
+            box-shadow: 0 0 30px var(--glow);
         }
 
         .partner-card:hover {
             transform: translateY(-10px);
             border-color: rgba(255, 255, 255, 0.5);
             background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px var(--glow);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 40px var(--glow);
         }
 
         .partner-logo {
-            width: 100px; height: 100px;
-            margin-bottom: 25px;
+            width: 120px; height: 120px;
+            margin-bottom: 30px;
             object-fit: contain;
         }
 
-        .partner-card h3 { margin: 0; font-size: 28px; font-weight: 900; letter-spacing: -1px; }
-        .partner-card p { margin: 15px 0 25px; opacity: 0.6; font-size: 16px; line-height: 1.6; }
+        .partner-card h3 { margin: 0; font-size: 32px; font-weight: 900; letter-spacing: -1px; }
+        .partner-card p { margin: 20px 0 30px; opacity: 0.6; font-size: 17px; line-height: 1.6; }
         
         .visit-btn {
-            padding: 12px 35px;
+            padding: 14px 45px;
             background: white;
             color: black;
-            border-radius: 30px;
+            border-radius: 40px;
             font-size: 14px;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .placeholder-card {
-            width: 350px;
-            border: 1px dashed rgba(255,255,255,0.1);
-            border-radius: 24px;
-            display: flex; align-items: center; justify-content: center;
-            color: rgba(255,255,255,0.2); font-size: 14px;
-            text-transform: uppercase; letter-spacing: 2px;
+            letter-spacing: 2px;
         }
     </style>
 </head>
@@ -136,21 +119,14 @@
 
     <header>
         <div class="title">Partners</div>
-        <div class="subtitle">POWERED BY THE BEST.</div>
     </header>
 
-    <div class="grid">
-        <a href="https://example.com" target="_blank" class="partner-card">
-            <img src="https://images.emojiterra.com/google/android-11/512px/1f911.png" class="partner-logo" alt="GamingBrothers 103">
-            <h3>GamingBrothers 103</h3>
-            <p>Official partner of Gemini Hub. Leading the way in gaming content and community engagement.</p>
-            <div class="visit-btn">Visit Partner</div>
-        </a>
-
-        <div class="placeholder-card">
-            Slot Available
-        </div>
-    </div>
+    <a href="https://example.com" target="_blank" class="partner-card">
+        <img src="https://images.emojiterra.com/google/android-11/512px/1f911.png" class="partner-logo" alt="GamingBrothers 103">
+        <h3>GamingBrothers 103</h3>
+        <p>Official partner of Gemini Hub. Leading the way in gaming content and community engagement.</p>
+        <div class="visit-btn">Visit Partner</div>
+    </a>
 
     <script>
         // BUBBLES GENERATOR

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gemini | Games</title>
+    <style>
+        :root {
+            --accent: #ffffff;
+            --bg: #050507;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg);
+            font-family: 'Inter', sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Background Glitter */
+        .bg-glitter {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #11111d 0%, #050507 100%);
+        }
+        .bg-glitter::after {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3%3C/filter%3%3Crect width='100%' height='100%' filter='url(%23noiseFilter)'/%3%3C/svg%3%3");
+            opacity: 0.05; pointer-events: none;
+        }
+
+        header {
+            width: 100%;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 5vh;
+            font-weight: 900;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            width: 90%;
+            max-width: 1200px;
+            padding-bottom: 50px;
+        }
+
+        /* Game Card Style */
+        .game-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .card-info {
+            padding: 20px;
+        }
+
+        .card-info h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .card-info p {
+            margin: 8px 0 0;
+            font-size: 14px;
+            opacity: 0.5;
+        }
+
+        /* Game Overlay Frame */
+        #gameOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            z-index: 9999;
+        }
+
+        #gameFrame {
+            width: 100%; height: 100%; border: none;
+        }
+
+        .close-game {
+            position: absolute; top: 20px; right: 20px;
+            width: 45px; height: 45px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 20px; font-weight: bold;
+            z-index: 10000;
+        }
+
+        .back-home {
+            position: fixed; top: 25px; left: 25px;
+            text-decoration: none; color: white;
+            font-size: 14px; opacity: 0.6;
+            transition: 0.3s;
+        }
+        .back-home:hover { opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glitter"></div>
+
+    <a href="index.html" class="back-home">← BACK TO HUB</a>
+
+    <header>
+        <div class="title">Games</div>
+    </header>
+
+    <div class="grid">
+        <div class="game-card" onclick="playGame('https://cdn.jsdelivr.net/gh/exoticstecvr/Gemini-Games@main/ragdollplayground.html')">
+            <div class="card-image" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_xN8v6fBq4Y7j3R1E1P-Y2f9Z1_8Z1_8Z1_8&usqp=CAU');"></div>
+            <div class="card-info">
+                <h3>Ragdoll Playground</h3>
+                <p>Physics-based sandbox mayhem.</p>
+            </div>
+        </div>
+
+        <div class="game-card" style="opacity: 0.3; cursor: default;">
+            <div class="card-image" style="background: #111;"></div>
+            <div class="card-info">
+                <h3>More Coming Soon</h3>
+                <p>Add more to your folder...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="gameOverlay">
+        <div class="close-game" onclick="closeGame()">✕</div>
+        <iframe id="gameFrame" src=""></iframe>
+    </div>
+
+    <script>
+        function playGame(url) {
+            const overlay = document.getElementById('gameOverlay');
+            const frame = document.getElementById('gameFrame');
+            overlay.style.display = 'block';
+            frame.src = url;
+        }
+
+        function closeGame() {
+            const overlay = document.getElementById('gameOverlay');
+            const frame = document.getElementById('gameFrame');
+            overlay.style.display = 'none';
+            frame.src = '';
+        }
+    </script>
+</body>
+</html>

@@ -1,26 +1,82 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <script src="/uv/uv.bundle.js"></script>
-        <script src="/uv/uv.config.js"></script>
+<head>
+    <title>Gemini Proxy</title>
+    <script src="/uv/uv.bundle.js"></script>
+    <script src="/uv/uv.config.js"></script>
 
-        <script>
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", () => {
-                navigator.serviceWorker.register("/uv/sw.js", {
-                    scope: __uv$config.prefix,
-                });
+    <script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker.register("/uv/sw.js", {
+                scope: __uv$config.prefix,
             });
+        });
+    }
+    </script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #25252a;
         }
-        </script>
 
-        <link rel="stylesheet" href="example.css">
-    </head>
-    <body>
-        <input type="text" id="urlInput" placeholder="Enter URL here">
-        <button id="searchButton">Search Text</button>
+        .iframeWindow {
+            position: absolute;
+            width: 100vw;
+            height: 90vh;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            left: 0;
+            bottom: 0;
+            background-color: #fff;
+        }
 
-        <iframe id="iframeWindow" class="iframeWindow"></iframe>
-    </body>
+        #urlInput {
+            position: absolute;
+            padding: 0em;
+            padding-left: 0.5em;
+            margin: 0;
+            left: 0;
+            top: 0;
+            width: 80vw;
+            height: 10vh;
+            border: 0;
+            outline: 0;
+            color: aliceblue;
+            background-color: #25252a;
+            font-size: 5vh;
+        }
+
+        #searchButton {
+            position: absolute;
+            margin: 0;
+            right: 0;
+            top: 0;
+            width: 20vw;
+            height: 10vh;
+            border: 0;
+            outline: 0;
+            color: #141414;
+            background-color: aliceblue;
+            font-size: 5vh;
+            cursor: pointer;
+        }
+
+        #searchButton:hover {
+            background-color: #d1d1d1;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="urlInput" placeholder="Enter URL here">
+    <button id="searchButton">Go</button>
+
+    <iframe id="iframeWindow" class="iframeWindow"></iframe>
+
     <script src="example.js"></script>
+</body>
 </html>

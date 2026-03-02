@@ -7,6 +7,7 @@
         :root { 
             --bg-base: #050507; 
             --bg-glow: #11111d; 
+            --sidebar-width: 280px;
         }
         body { 
             margin: 0; padding: 0; 
@@ -20,40 +21,43 @@
         /* --- BACKGROUND & BUBBLES --- */
         .bg-container { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            z-index: -1; 
+            z-index: -2; 
             background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%); 
             transition: background 0.5s ease;
         }
-
+        #bubble-wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
         .bubble { 
             position: absolute; bottom: -12vh; background: rgba(255, 255, 255, 0.1); 
             border: 1px solid rgba(255,255,255,0.05); border-radius: 50%; 
             animation: floatUp 7s infinite ease-in; filter: blur(2px); opacity: 0; 
         }
-
         @keyframes floatUp { 
             0% { transform: translateY(0) scale(1); opacity: 0; } 
+            20% { opacity: 0.6; }
             100% { transform: translateY(-125vh) scale(0.5); opacity: 0; } 
         }
 
-        header { padding: 40px 0; text-align: center; }
-        .title { font-size: 5vh; font-weight: 900; text-transform: uppercase; color: white; letter-spacing: -2px; }
-
-        .home-btn { 
-            position: fixed; top: 25px; left: 25px; width: 50px; height: 50px; 
-            background: rgba(10,10,15,0.5); border: 1px solid rgba(255,255,255,0.2); 
-            backdrop-filter: blur(10px); border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            text-decoration: none; color: white; font-size: 22px; z-index: 100; transition: 0.3s; 
+        /* --- SIDEBAR MENU --- */
+        #menuBtn { position: fixed; top: 25px; left: 25px; font-size: 30px; cursor: pointer; z-index: 3000; }
+        .sidebar {
+            position: fixed; top: 0; left: calc(-1 * var(--sidebar-width));
+            width: var(--sidebar-width); height: 100%; background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px); border-right: 1px solid rgba(255,255,255,0.1);
+            z-index: 2500; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; padding: 100px 30px; box-sizing: border-box;
         }
-        .home-btn:hover { background: white; color: black; }
+        .sidebar.active { left: 0; }
+        .sidebar a { color: white; text-decoration: none; font-size: 20px; margin-bottom: 25px; opacity: 0.7; transition: 0.3s; display: flex; align-items: center; gap: 15px; }
+        .sidebar a:hover { opacity: 1; transform: translateX(10px); }
+
+        header { padding: 60px 0 40px 0; text-align: center; }
+        .title { font-size: 5vh; font-weight: 900; text-transform: uppercase; color: white; letter-spacing: -2px; }
 
         .grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-            gap: 30px; width: 90%; max-width: 1200px; padding-bottom: 50px; 
+            gap: 30px; width: 90%; max-width: 1200px; padding-bottom: 80px; 
         }
-
         .game-card { 
             background: rgba(255, 255, 255, 0.03); 
             border: 1px solid rgba(255, 255, 255, 0.1); 
@@ -61,38 +65,34 @@
             transition: 0.4s; backdrop-filter: blur(10px); 
         }
         .game-card:hover { transform: translateY(-10px); border-color: white; }
-        
-        .card-image { width: 100%; height: 180px; background-size: cover; background-position: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .card-image { width: 100%; height: 180px; background-size: cover; background-position: center; }
         .card-info { padding: 20px; }
-        .card-info h3 { margin: 0; font-size: 22px; }
-        .card-info p { opacity: 0.6; font-size: 14px; margin-top: 5px; }
 
-        /* --- GAME OVERLAY --- */
         #gameOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; }
         #gameFrame { width: 100%; height: 100%; border: none; }
-        .close-btn { 
-            position: absolute; top: 20px; right: 20px; width: 45px; height: 45px; 
-            background: rgba(255,255,255,0.1); color: white; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; z-index: 10000; font-weight: bold;
-        }
+        .close-btn { position: absolute; top: 20px; right: 20px; width: 45px; height: 45px; background: rgba(255,255,255,0.1); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10000; }
     </style>
 </head>
 <body>
     <div class="bg-container" id="bg-container"></div>
-    <a href="index.html" class="home-btn">🏠</a>
-    
-    <header><div class="title">Games</div></header>
+    <div id="bubble-wrapper"></div>
+
+    <div id="menuBtn" onclick="toggleMenu()">☰</div>
+
+    <div class="sidebar" id="sidebar">
+        <a href="index.html"><span>🏠</span> Home</a>
+        <a href="games.html"><span>🎮</span> Games</a>
+        <a href="partners.html"><span>🤝</span> Partners</a>
+    </div>
+
+    <header><div class="title">Games Library</div></header>
 
     <div class="grid">
         <div class="game-card" onclick="fetchAndPlay('https://cdn.jsdelivr.net/gh/exoticstecvr/Gemini-Games@main/ragdollplayground.html')">
             <div class="card-image" style="background-image: url('https://ragdollplayground.io/data/image/options/ragdoll-playground-banner.png');"></div>
-            <div class="card-info">
-                <h3>Ragdoll Playground</h3>
-                <p>Physics-based sandbox simulation.</p>
-            </div>
+            <div class="card-info"><h3>Ragdoll Playground</h3><p>Physics-based sandbox simulation.</p></div>
         </div>
-        </div>
+    </div>
 
     <div id="gameOverlay">
         <div class="close-btn" onclick="closeGame()">✕</div>
@@ -100,50 +100,43 @@
     </div>
 
     <script>
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
+
         function applyGlobalSettings() {
             const glow = localStorage.getItem('gemini-bg-glow') || '#11111d';
             const base = localStorage.getItem('gemini-bg-base') || '#050507';
             const bgUrl = localStorage.getItem('gemini-bg-url');
             const bgC = document.getElementById('bg-container');
+            const bWrap = document.getElementById('bubble-wrapper');
             
             if(bgC) {
                 bgC.style.background = `radial-gradient(circle at center, ${glow} 0%, ${base} 100%)`;
                 if (bgUrl) {
-                    bgC.style.backgroundImage = `url(${bgUrl})`; 
-                    bgC.style.backgroundSize = 'cover';
-                    bgC.style.backgroundPosition = 'center';
-                    Array.from(document.getElementsByClassName('bubble')).forEach(b => b.style.display = 'none');
+                    bgC.style.backgroundImage = `url(${bgUrl})`; bgC.style.backgroundSize = 'cover';
+                    bWrap.style.display = 'none';
                 } else {
                     bgC.style.backgroundImage = 'none';
-                    Array.from(document.getElementsByClassName('bubble')).forEach(b => b.style.display = 'block');
+                    bWrap.style.display = 'block';
                 }
             }
         }
 
         async function fetchAndPlay(url) {
-            const overlay = document.getElementById('gameOverlay');
-            const frame = document.getElementById('gameFrame');
-            overlay.style.display = 'block';
+            document.getElementById('gameOverlay').style.display = 'block';
             const response = await fetch(url);
             const htmlCode = await response.text();
-            const frameDoc = frame.contentWindow.document;
+            const frameDoc = document.getElementById('gameFrame').contentWindow.document;
             frameDoc.open(); frameDoc.write(htmlCode); frameDoc.close();
         }
+        function closeGame() { document.getElementById('gameOverlay').style.display = 'none'; document.getElementById('gameFrame').src = 'about:blank'; }
 
-        function closeGame() {
-            document.getElementById('gameOverlay').style.display = 'none';
-            document.getElementById('gameFrame').src = 'about:blank';
-        }
-
-        // Bubbles Generator
-        const bgCont = document.getElementById('bg-container');
+        const bWrap = document.getElementById('bubble-wrapper');
         for (let i = 0; i < 25; i++) {
             const b = document.createElement('div'); b.className = 'bubble';
             const s = (2+Math.random()*6)+"vh"; b.style.width = s; b.style.height = s;
             b.style.left = Math.random()*100+"vw"; b.style.animationDelay = (Math.random()*5)+"s";
-            bgCont.appendChild(b);
+            bWrap.appendChild(b);
         }
-
         window.onload = applyGlobalSettings;
     </script>
 </body>

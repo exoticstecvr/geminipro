@@ -6,6 +6,7 @@
     <style>
         :root { --bg-base: #050507; --bg-glow: #11111d; --sidebar-width: 280px; }
         body { margin: 0; padding: 0; background-color: var(--bg-base); font-family: 'Inter', sans-serif; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+        
         .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%); transition: background 0.5s ease; }
         #bubble-wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
         .bubble { position: absolute; bottom: -12vh; background: rgba(255, 255, 255, 0.1); border-radius: 50%; animation: floatUp 7s infinite ease-in; filter: blur(2px); opacity: 0; }
@@ -21,9 +22,9 @@
         .partner-logo { width: 100px; height: 100px; margin-bottom: 20px; }
         .visit-btn { margin-top: 20px; padding: 10px 30px; background: white; color: black; border-radius: 20px; font-weight: bold; display: inline-block; }
 
-        #customOverlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.9); z-index:5000; flex-direction:column; align-items:center; justify-content:center; }
-        .theme-btn { height:40px; border-radius:10px; cursor:pointer; border: 2px solid transparent; }
-        .theme-btn.active { border-color: white; }
+        #customOverlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.9); backdrop-filter:blur(20px); z-index:5000; flex-direction:column; align-items:center; justify-content:center; }
+        .theme-btn { height:45px; border-radius:12px; cursor:pointer; border: 2px solid transparent; transition: 0.2s; }
+        .theme-btn.active { border-color: white; transform: scale(1.1); }
     </style>
 </head>
 <body>
@@ -40,7 +41,7 @@
 
     <h1 style="font-size: 6vh; margin-bottom: 30px;">PARTNERS</h1>
 
-    <a href="#" class="partner-card">
+    <a href="https://example.com" target="_blank" class="partner-card">
         <img src="https://images.emojiterra.com/google/android-11/512px/1f911.png" class="partner-logo">
         <h3>GamingBrothers 103</h3>
         <p>A top-tier partner for the Gemini Hub.</p>
@@ -48,14 +49,21 @@
     </a>
 
     <div id="customOverlay">
-        <div style="background:rgba(20,20,25,0.9); padding:30px; border-radius:20px; text-align:center; width:250px;">
-            <h3>Themes</h3>
-            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-bottom:20px;">
+        <div style="background:rgba(15,15,20,0.95); padding:40px; border-radius:30px; border:1px solid rgba(255,255,255,0.1); width:350px; text-align:center;">
+            <h2 style="margin-top:0;">Color Theme</h2>
+            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-bottom:30px;">
                 <button class="theme-btn" data-glow="#11111d" onclick="setTheme('#11111d', '#050507')" style="background:radial-gradient(circle, #11111d, #050507);"></button>
                 <button class="theme-btn" data-glow="#0a2b0a" onclick="setTheme('#0a2b0a', '#020a02')" style="background:radial-gradient(circle, #0a2b0a, #020a02);"></button>
                 <button class="theme-btn" data-glow="#2b0a0a" onclick="setTheme('#2b0a0a', '#0a0202')" style="background:radial-gradient(circle, #2b0a0a, #0a0202);"></button>
+                <button class="theme-btn" data-glow="#0a1b2b" onclick="setTheme('#0a1b2b', '#02050a')" style="background:radial-gradient(circle, #0a1b2b, #02050a);"></button>
+                <button class="theme-btn" data-glow="#1b0a2b" onclick="setTheme('#1b0a2b', '#05020a')" style="background:radial-gradient(circle, #1b0a2b, #05020a);"></button>
+                <button class="theme-btn" data-glow="#0a2b27" onclick="setTheme('#0a2b27', '#020a09')" style="background:radial-gradient(circle, #0a2b27, #020a09);"></button>
             </div>
-            <button onclick="closeCustomize()" style="background:white; color:black; padding:10px 20px; border-radius:20px; cursor:pointer;">Close</button>
+            <h2>Background URL</h2>
+            <input type="text" id="bgUrlInput" placeholder="Paste GIF or Image URL..." style="width:100%; padding:10px; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:10px; margin-bottom:10px; box-sizing:border-box;">
+            <button onclick="saveBgUrl()" style="width:100%; padding:10px; background:white; color:black; border-radius:10px; font-weight:900; cursor:pointer; margin-bottom:10px; border:none;">Apply Image</button>
+            <button onclick="clearToDefault()" style="width:100%; padding:10px; background:transparent; color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.2); border-radius:10px; cursor:pointer;">Reset to Default</button>
+            <button onclick="closeCustomize()" style="margin-top:20px; padding:10px 30px; background:white; color:black; border-radius:20px; font-weight:900; border:none; cursor:pointer;">Close</button>
         </div>
     </div>
 
@@ -70,14 +78,16 @@
             const bgUrl = localStorage.getItem('gemini-bg-url');
             const bgC = document.getElementById('bg-container');
             const bW = document.getElementById('bubble-wrapper');
-            if (bgUrl) { bgC.style.backgroundImage = `url(${bgUrl})`; bW.style.display = 'none'; }
-            else { bgC.style.backgroundImage = 'none'; bW.style.display = 'block'; }
             document.documentElement.style.setProperty('--bg-glow', glow);
             document.documentElement.style.setProperty('--bg-base', base);
+            if (bgUrl) { bgC.style.backgroundImage = `url(${bgUrl})`; bgC.style.backgroundSize = 'cover'; bW.style.display = 'none'; }
+            else { bgC.style.backgroundImage = 'none'; bW.style.display = 'block'; }
             updateButtonHighlight();
         }
 
         function setTheme(g, b) { localStorage.setItem('gemini-bg-glow', g); localStorage.setItem('gemini-bg-base', b); applySettings(); }
+        function saveBgUrl() { const url = document.getElementById('bgUrlInput').value.trim(); if(url) { localStorage.setItem('gemini-bg-url', url); applySettings(); } }
+        function clearToDefault() { localStorage.removeItem('gemini-bg-url'); setTheme('#11111d', '#050507'); }
         function updateButtonHighlight() {
             const cur = localStorage.getItem('gemini-bg-glow') || '#11111d';
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-glow') === cur));

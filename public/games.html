@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <title>Gemini | Games</title>
     <style>
-        :root { --accent: #ffffff; --bg: #050507; --card-bg: rgba(255, 255, 255, 0.03); --card-border: rgba(255, 255, 255, 0.1); }
-        body { margin: 0; padding: 0; background-color: var(--bg); font-family: 'Inter', sans-serif; color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
-        .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: radial-gradient(circle at center, #11111d 0%, #050507 100%); }
-        .bubble { position: absolute; bottom: -10vh; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.05); border-radius: 50%; animation: floatUp 7s infinite ease-in; filter: blur(2px); opacity: 0; }
+        :root { --bg-base: #050507; --bg-glow: #11111d; }
+        body { margin: 0; padding: 0; background-color: var(--bg-base); font-family: 'Inter', sans-serif; color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%); }
+        .bubble { position: absolute; bottom: -10vh; background: rgba(255, 255, 255, 0.1); border-radius: 50%; animation: floatUp 7s infinite ease-in; filter: blur(2px); opacity: 0; }
         @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 0; } 100% { transform: translateY(-125vh) scale(0.5); opacity: 0; } }
         header { padding: 40px 0; text-align: center; }
-        .title { font-size: 5vh; font-weight: 900; color: var(--accent); text-transform: uppercase; }
+        .title { font-size: 5vh; font-weight: 900; text-transform: uppercase; color: white; }
         .home-btn { position: fixed; top: 25px; left: 25px; width: 50px; height: 50px; background: rgba(10,10,15,0.98); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: white; font-size: 22px; z-index: 100; transition: 0.3s; }
         .home-btn:hover { background: white; color: black; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; width: 90%; max-width: 1200px; }
-        .game-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; cursor: pointer; transition: 0.4s; backdrop-filter: blur(10px); }
-        .game-card:hover { transform: translateY(-10px); border-color: var(--accent); }
-        .card-image { width: 100%; height: 180px; background-size: cover; background-position: center; border-bottom: 1px solid var(--card-border); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; width: 90%; max-width: 1200px; padding-bottom: 50px; }
+        .game-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; overflow: hidden; cursor: pointer; transition: 0.4s; backdrop-filter: blur(10px); }
+        .game-card:hover { transform: translateY(-10px); border-color: white; }
+        .card-image { width: 100%; height: 180px; background-size: cover; background-position: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
         .card-info { padding: 20px; }
         #gameOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; }
         #gameFrame { width: 100%; height: 100%; border: none; }
@@ -36,13 +36,18 @@
     <div id="gameOverlay"><div class="close-btn" onclick="closeGame()">✕</div><iframe id="gameFrame"></iframe></div>
     <script>
         function applyGlobalSettings() {
-            const theme = localStorage.getItem('gemini-theme') || '#ffffff';
-            const bg = localStorage.getItem('gemini-bg');
-            document.documentElement.style.setProperty('--accent', theme);
+            const glow = localStorage.getItem('gemini-bg-glow') || '#11111d';
+            const base = localStorage.getItem('gemini-bg-base') || '#050507';
+            const bgUrl = localStorage.getItem('gemini-bg-url');
             const bgC = document.getElementById('bg-container');
-            if (bg) {
-                bgC.style.backgroundImage = `url(${bg})`; bgC.style.backgroundSize = 'cover';
-                Array.from(document.getElementsByClassName('bubble')).forEach(b => b.style.display = 'none');
+            if(bgC) {
+                bgC.style.background = `radial-gradient(circle at center, ${glow} 0%, ${base} 100%)`;
+                if (bgUrl) {
+                    bgC.style.backgroundImage = `url(${bgUrl})`; bgC.style.backgroundSize = 'cover';
+                    Array.from(document.getElementsByClassName('bubble')).forEach(b => b.style.display = 'none');
+                } else {
+                    Array.from(document.getElementsByClassName('bubble')).forEach(b => b.style.display = 'block');
+                }
             }
         }
         async function fetchAndPlay(url) {
@@ -55,11 +60,10 @@
             frameDoc.open(); frameDoc.write(htmlCode); frameDoc.close();
         }
         function closeGame() { document.getElementById('gameOverlay').style.display = 'none'; document.getElementById('gameFrame').src = 'about:blank'; }
-        
         const container = document.getElementById('bg-container');
         for (let i = 0; i < 20; i++) {
             const b = document.createElement('div'); b.className = 'bubble';
-            b.style.width = (2+Math.random()*6)+"vh"; b.style.height = b.style.width;
+            const s = (2+Math.random()*6)+"vh"; b.style.width = s; b.style.height = s;
             b.style.left = Math.random()*100+"vw"; b.style.animationDelay = (Math.random()*4)+"s";
             container.appendChild(b);
         }

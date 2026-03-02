@@ -4,114 +4,93 @@
     <meta charset="UTF-8">
     <title>Gemini | Partners</title>
     <style>
-        :root { 
-            --bg-base: #050507; 
-            --bg-glow: #11111d; 
-            --sidebar-width: 280px;
-        }
-        body { 
-            margin: 0; padding: 0; 
-            background-color: var(--bg-base); 
-            font-family: 'Inter', sans-serif; 
-            color: white; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            min-height: 100vh; overflow: hidden; 
-        }
-
-        .bg-container { 
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            z-index: -2; 
-            background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%); 
-            transition: background 0.5s ease;
-        }
+        :root { --bg-base: #050507; --bg-glow: #11111d; --sidebar-width: 280px; }
+        body { margin: 0; padding: 0; background-color: var(--bg-base); font-family: 'Inter', sans-serif; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+        .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%); transition: background 0.5s ease; }
         #bubble-wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
-        .bubble { 
-            position: absolute; bottom: -12vh; background: rgba(255, 255, 255, 0.1); 
-            border: 1px solid rgba(255,255,255,0.05); border-radius: 50%; 
-            animation: floatUp 7s infinite ease-in; filter: blur(2px); opacity: 0; 
-        }
-        @keyframes floatUp { 
-            0% { transform: translateY(0) scale(1); opacity: 0; } 
-            20% { opacity: 0.6; }
-            100% { transform: translateY(-125vh) scale(0.5); opacity: 0; } 
-        }
-
+        .bubble { position: absolute; bottom: -12vh; background: rgba(255, 255, 255, 0.1); border-radius: 50%; animation: floatUp 7s infinite ease-in; filter: blur(2px); opacity: 0; }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.6; } 100% { transform: translateY(-125vh) scale(0.5); opacity: 0; } }
+        
         #menuBtn { position: fixed; top: 25px; left: 25px; font-size: 30px; cursor: pointer; z-index: 3000; }
-        .sidebar {
-            position: fixed; top: 0; left: calc(-1 * var(--sidebar-width));
-            width: var(--sidebar-width); height: 100%; background: rgba(10, 10, 15, 0.95);
-            backdrop-filter: blur(20px); border-right: 1px solid rgba(255,255,255,0.1);
-            z-index: 2500; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; flex-direction: column; padding: 100px 30px; box-sizing: border-box;
-        }
+        .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(20px); z-index: 2500; transition: 0.4s; padding: 100px 30px; box-sizing: border-box; }
         .sidebar.active { left: 0; }
-        .sidebar a { color: white; text-decoration: none; font-size: 20px; margin-bottom: 25px; opacity: 0.7; transition: 0.3s; display: flex; align-items: center; gap: 15px; }
-        .sidebar a:hover { opacity: 1; transform: translateX(10px); }
+        .sidebar a { color: white; text-decoration: none; font-size: 20px; display: block; margin-bottom: 25px; cursor: pointer; }
 
-        header { margin-bottom: 40px; text-align: center; }
-        .title { font-size: 6vh; font-weight: 900; text-transform: uppercase; color: white; letter-spacing: -3px; }
-
-        .partner-card { 
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 30px; padding: 50px; text-align: center; backdrop-filter: blur(20px); 
-            transition: 0.4s; text-decoration: none; color: white; display: flex; 
-            flex-direction: column; align-items: center; width: 400px; 
-        }
+        .partner-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px; padding: 40px; text-align: center; width: 350px; backdrop-filter: blur(20px); transition: 0.4s; text-decoration: none; color: white; }
         .partner-card:hover { transform: translateY(-10px); border-color: white; }
-        .partner-logo { width: 120px; height: 120px; margin-bottom: 30px; border-radius: 20px; }
-        .visit-btn { padding: 14px 45px; background: white; color: black; border-radius: 40px; font-size: 14px; font-weight: 900; text-transform: uppercase; }
+        .partner-logo { width: 100px; height: 100px; margin-bottom: 20px; }
+        .visit-btn { margin-top: 20px; padding: 10px 30px; background: white; color: black; border-radius: 20px; font-weight: bold; display: inline-block; }
+
+        #customOverlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.9); z-index:5000; flex-direction:column; align-items:center; justify-content:center; }
+        .theme-btn { height:40px; border-radius:10px; cursor:pointer; border: 2px solid transparent; }
+        .theme-btn.active { border-color: white; }
     </style>
 </head>
 <body>
     <div class="bg-container" id="bg-container"></div>
     <div id="bubble-wrapper"></div>
-
     <div id="menuBtn" onclick="toggleMenu()">☰</div>
 
     <div class="sidebar" id="sidebar">
-        <a href="index.html"><span>🏠</span> Home</a>
-        <a href="games.html"><span>🎮</span> Games</a>
-        <a href="partners.html"><span>🤝</span> Partners</a>
+        <a href="index.html">🏠 Home</a>
+        <a href="games.html">🎮 Games</a>
+        <a href="partners.html">🤝 Partners</a>
+        <a onclick="openCustomize()">🎨 Customize</a>
     </div>
 
-    <header><div class="title">Partners</div></header>
+    <h1 style="font-size: 6vh; margin-bottom: 30px;">PARTNERS</h1>
 
-    <a href="https://example.com" target="_blank" class="partner-card">
+    <a href="#" class="partner-card">
         <img src="https://images.emojiterra.com/google/android-11/512px/1f911.png" class="partner-logo">
         <h3>GamingBrothers 103</h3>
-        <p>Official partner of Gemini Hub. Leading the way in community engagement.</p>
-        <div class="visit-btn">Visit Partner</div>
+        <p>A top-tier partner for the Gemini Hub.</p>
+        <div class="visit-btn">VISIT</div>
     </a>
+
+    <div id="customOverlay">
+        <div style="background:rgba(20,20,25,0.9); padding:30px; border-radius:20px; text-align:center; width:250px;">
+            <h3>Themes</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-bottom:20px;">
+                <button class="theme-btn" data-glow="#11111d" onclick="setTheme('#11111d', '#050507')" style="background:radial-gradient(circle, #11111d, #050507);"></button>
+                <button class="theme-btn" data-glow="#0a2b0a" onclick="setTheme('#0a2b0a', '#020a02')" style="background:radial-gradient(circle, #0a2b0a, #020a02);"></button>
+                <button class="theme-btn" data-glow="#2b0a0a" onclick="setTheme('#2b0a0a', '#0a0202')" style="background:radial-gradient(circle, #2b0a0a, #0a0202);"></button>
+            </div>
+            <button onclick="closeCustomize()" style="background:white; color:black; padding:10px 20px; border-radius:20px; cursor:pointer;">Close</button>
+        </div>
+    </div>
 
     <script>
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
-        function applyGlobalSettings() {
+        function openCustomize() { document.getElementById('customOverlay').style.display='flex'; toggleMenu(); updateButtonHighlight(); }
+        function closeCustomize() { document.getElementById('customOverlay').style.display='none'; }
+
+        function applySettings() {
             const glow = localStorage.getItem('gemini-bg-glow') || '#11111d';
             const base = localStorage.getItem('gemini-bg-base') || '#050507';
             const bgUrl = localStorage.getItem('gemini-bg-url');
             const bgC = document.getElementById('bg-container');
-            const bWrap = document.getElementById('bubble-wrapper');
-            
-            if(bgC) {
-                bgC.style.background = `radial-gradient(circle at center, ${glow} 0%, ${base} 100%)`;
-                if (bgUrl) {
-                    bgC.style.backgroundImage = `url(${bgUrl})`; bgC.style.backgroundSize = 'cover';
-                    bWrap.style.display = 'none';
-                } else {
-                    bgC.style.backgroundImage = 'none';
-                    bWrap.style.display = 'block';
-                }
-            }
+            const bW = document.getElementById('bubble-wrapper');
+            if (bgUrl) { bgC.style.backgroundImage = `url(${bgUrl})`; bW.style.display = 'none'; }
+            else { bgC.style.backgroundImage = 'none'; bW.style.display = 'block'; }
+            document.documentElement.style.setProperty('--bg-glow', glow);
+            document.documentElement.style.setProperty('--bg-base', base);
+            updateButtonHighlight();
         }
 
-        const bWrap = document.getElementById('bubble-wrapper');
+        function setTheme(g, b) { localStorage.setItem('gemini-bg-glow', g); localStorage.setItem('gemini-bg-base', b); applySettings(); }
+        function updateButtonHighlight() {
+            const cur = localStorage.getItem('gemini-bg-glow') || '#11111d';
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-glow') === cur));
+        }
+
+        const bW = document.getElementById('bubble-wrapper');
         for (let i = 0; i < 20; i++) {
             const b = document.createElement('div'); b.className = 'bubble';
-            const s = (2+Math.random()*6)+"vh"; b.style.width = s; b.style.height = b.style.width;
+            const s = (2+Math.random()*6)+"vh"; b.style.width = s; b.style.height = s;
             b.style.left = Math.random()*100+"vw"; b.style.animationDelay = (Math.random()*4)+"s";
-            bWrap.appendChild(b);
+            bW.appendChild(b);
         }
-        window.onload = applyGlobalSettings;
+        window.onload = applySettings;
     </script>
 </body>
 </html>

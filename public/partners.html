@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <title>Gemini | Partners</title>
     <style>
-        :root { --accent: #ffffff; --bg: #050507; --card-bg: rgba(255, 255, 255, 0.03); --card-border: rgba(255, 255, 255, 0.1); }
-        body { margin: 0; padding: 0; background-color: var(--bg); font-family: 'Inter', sans-serif; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
-        .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: radial-gradient(circle at center, #11111d 0%, #050507 100%); }
+        :root { --bg-base: #050507; --bg-glow: #11111d; }
+        body { margin: 0; padding: 0; background-color: var(--bg-base); font-family: 'Inter', sans-serif; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+        .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%); }
         .bubble { position: absolute; bottom: -10vh; background: rgba(255, 255, 255, 0.1); border-radius: 50%; animation: floatUp 7s infinite ease-in; filter: blur(2px); opacity: 0; }
         @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 0; } 100% { transform: translateY(-125vh) scale(0.5); opacity: 0; } }
         header { margin-bottom: 40px; text-align: center; }
-        .title { font-size: 6vh; font-weight: 900; text-transform: uppercase; color: var(--accent); }
+        .title { font-size: 6vh; font-weight: 900; text-transform: uppercase; color: white; }
         .home-btn { position: fixed; top: 25px; left: 25px; width: 50px; height: 50px; background: rgba(10,10,15,0.98); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; color: white; font-size: 22px; z-index: 100; transition: 0.3s; }
         .home-btn:hover { background: white; color: black; }
-        .partner-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 30px; padding: 50px; text-align: center; backdrop-filter: blur(20px); transition: 0.4s; text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center; width: 400px; }
-        .partner-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 0 30px rgba(255,255,255,0.1); }
+        .partner-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px; padding: 50px; text-align: center; backdrop-filter: blur(20px); transition: 0.4s; text-decoration: none; color: white; display: flex; flex-direction: column; align-items: center; width: 400px; }
+        .partner-card:hover { transform: translateY(-10px); border-color: white; box-shadow: 0 0 30px rgba(255,255,255,0.1); }
         .partner-logo { width: 120px; height: 120px; margin-bottom: 30px; }
         .visit-btn { padding: 14px 45px; background: white; color: black; border-radius: 40px; font-size: 14px; font-weight: 900; text-transform: uppercase; }
     </style>
@@ -31,19 +31,24 @@
     </a>
     <script>
         function applyGlobalSettings() {
-            const theme = localStorage.getItem('gemini-theme') || '#ffffff';
-            const bg = localStorage.getItem('gemini-bg');
-            document.documentElement.style.setProperty('--accent', theme);
+            const glow = localStorage.getItem('gemini-bg-glow') || '#11111d';
+            const base = localStorage.getItem('gemini-bg-base') || '#050507';
+            const bgUrl = localStorage.getItem('gemini-bg-url');
             const bgC = document.getElementById('bg-container');
-            if (bg) {
-                bgC.style.backgroundImage = `url(${bg})`; bgC.style.backgroundSize = 'cover';
-                Array.from(document.getElementsByClassName('bubble')).forEach(b => b.style.display = 'none');
+            if(bgC) {
+                bgC.style.background = `radial-gradient(circle at center, ${glow} 0%, ${base} 100%)`;
+                if (bgUrl) {
+                    bgC.style.backgroundImage = `url(${bgUrl})`; bgC.style.backgroundSize = 'cover';
+                    Array.from(document.getElementsByClassName('bubble')).forEach(b => b.style.display = 'none');
+                } else {
+                    Array.from(document.getElementsByClassName('bubble')).forEach(b => b.style.display = 'block');
+                }
             }
         }
         const container = document.getElementById('bg-container');
         for (let i = 0; i < 20; i++) {
             const b = document.createElement('div'); b.className = 'bubble';
-            b.style.width = (2+Math.random()*6)+"vh"; b.style.height = b.style.width;
+            const s = (2+Math.random()*6)+"vh"; b.style.width = s; b.style.height = b.style.width;
             b.style.left = Math.random()*100+"vw"; b.style.animationDelay = (Math.random()*4)+"s";
             container.appendChild(b);
         }

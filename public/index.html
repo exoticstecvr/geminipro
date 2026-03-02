@@ -19,7 +19,7 @@
     <style>
         :root {
             --accent: #ffffff;
-            --panel-bg: rgba(10, 10, 15, 0.5); /* Semi-transparent */
+            --panel-bg: rgba(10, 10, 15, 0.5); 
             --bg-base: #050507; 
             --bg-glow: #11111d; 
             --sidebar-width: 280px;
@@ -33,12 +33,11 @@
             height: 100vh; width: 100vw; overflow: hidden; color: white;
         }
 
-        /* --- BACKGROUND --- */
         .bg-container {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1; 
             background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%);
-            transition: background 0.8s ease;
+            transition: background 0.5s ease;
         }
 
         .bubble {
@@ -52,7 +51,6 @@
             100% { transform: translateY(-125vh) scale(0.5); opacity: 0; }
         }
 
-        /* --- SIDEBAR --- */
         #menuBtn { position: fixed; top: 25px; left: 25px; font-size: 30px; cursor: pointer; z-index: 3000; }
         .sidebar {
             position: fixed; top: 0; left: calc(-1 * var(--sidebar-width));
@@ -65,7 +63,6 @@
         .sidebar a { color: white; text-decoration: none; font-size: 20px; margin-bottom: 25px; opacity: 0.7; transition: 0.3s; display: flex; align-items: center; gap: 15px; }
         .sidebar a:hover { opacity: 1; transform: translateX(10px); }
 
-        /* --- UI ELEMENTS --- */
         .trapezoid-header {
             position: absolute; top: 0; width: 650px; height: 105px; 
             background: var(--panel-bg);
@@ -85,12 +82,12 @@
         #urlInput { flex: 1; background: transparent; border: none; outline: none; color: white; padding: 0 30px; font-size: 2.5vh; }
         #searchButton { 
             width: 10vw; background: white; color: black; border: none; font-weight: 900; 
-            cursor: pointer; border-radius: 0 14px 14px 0; transition: background 0.5s ease;
+            cursor: pointer; border-radius: 0 14px 14px 0;
         }
 
         .quick-links { display: flex; gap: 20px; margin-top: 35px; }
         .quick-btn { width: 55px; height: 55px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
-        .quick-btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-5px); }
+        .quick-btn img { width: 24px; height: 24px; }
 
         #backBtn { display: none; position: fixed; top: 25px; right: 25px; width: 50px; height: 50px; background: rgba(10,10,15,0.9); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; color: white; font-size: 24px; align-items: center; justify-content: center; cursor: pointer; z-index: 4000; }
         #iframeWindow { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none; z-index: 3500; background: white; }
@@ -123,11 +120,11 @@
     </div>
 
     <div class="quick-links">
-        <div class="quick-btn" onclick="quickLaunch('https://google.com')"><img src="/google.ico" width="24"></div>
-        <div class="quick-btn" onclick="quickLaunch('https://youtube.com')"><img src="/youtube.ico" width="24"></div>
-        <div class="quick-btn" onclick="quickLaunch('https://discord.com')"><img src="/discord.ico" width="24"></div>
-        <div class="quick-btn" onclick="quickLaunch('https://duckduckgo.com')"><img src="/duckduckgo.ico" width="24"></div>
-        <div class="quick-btn" onclick="quickLaunch('https://poki.com')"><img src="/poki.ico" width="24"></div>
+        <div class="quick-btn" onclick="quickLaunch('https://google.com')"><img src="/google.ico"></div>
+        <div class="quick-btn" onclick="quickLaunch('https://youtube.com')"><img src="/youtube.ico"></div>
+        <div class="quick-btn" onclick="quickLaunch('https://discord.com')"><img src="/discord.ico"></div>
+        <div class="quick-btn" onclick="quickLaunch('https://duckduckgo.com')"><img src="/duckduckgo.ico"></div>
+        <div class="quick-btn" onclick="quickLaunch('https://poki.com')"><img src="/poki.ico"></div>
     </div>
 
     <div id="customOverlay">
@@ -135,16 +132,16 @@
             <h2 style="margin-top:0;">Color Theme</h2>
             <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-bottom:30px;">
                 <button onclick="setTheme('#11111d', '#050507')" style="background:radial-gradient(circle, #11111d, #050507); height:40px; border-radius:10px; cursor:pointer; border:1px solid white;"></button>
-                <button onclick="setTheme('#1d3411', '#050705')" style="background:radial-gradient(circle, #1d3411, #050705); height:40px; border-radius:10px; cursor:pointer; border:none;"></button>
-                <button onclick="setTheme('#341111', '#070505')" style="background:radial-gradient(circle, #341111, #070505); height:40px; border-radius:10px; cursor:pointer; border:none;"></button>
-                <button onclick="setTheme('#111d34', '#050507')" style="background:radial-gradient(circle, #111d34, #050507); height:40px; border-radius:10px; cursor:pointer; border:none;"></button>
-                <button onclick="setTheme('#2e1134', '#070507')" style="background:radial-gradient(circle, #2e1134, #070507); height:40px; border-radius:10px; cursor:pointer; border:none;"></button>
-                <button onclick="setTheme('#113432', '#050707')" style="background:radial-gradient(circle, #113432, #050707); height:40px; border-radius:10px; cursor:pointer; border:none;"></button>
+                <button onclick="setTheme('#0a2b0a', '#020a02')" style="background:radial-gradient(circle, #0a2b0a, #020a02); height:40px; border-radius:10px; cursor:pointer; border:none;"></button>
+                <button onclick="setTheme('#2b0a0a', '#0a0202')" style="background:radial-gradient(circle, #2b0a0a, #0a0202); height:40px; border-radius:10px; cursor:pointer; border:none;"></button>
+                <button onclick="setTheme('#0a1b2b', '#02050a')" style="background:radial-gradient(circle, #0a1b2b, #02050a); height:40px; border-radius:10px; cursor:pointer; border:none;"></button>
+                <button onclick="setTheme('#1b0a2b', '#05020a')" style="background:radial-gradient(circle, #1b0a2b, #05020a); height:40px; border-radius:10px; cursor:pointer; border:none;"></button>
+                <button onclick="setTheme('#0a2b27', '#020a09')" style="background:radial-gradient(circle, #0a2b27, #020a09); height:40px; border-radius:10px; cursor:pointer; border:none;"></button>
             </div>
             <h2>Background URL</h2>
             <input type="text" id="bgUrlInput" placeholder="Paste GIF or Image URL..." style="width:100%; padding:10px; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:10px; margin-bottom:10px; box-sizing:border-box;">
-            <button onclick="saveBgUrl()" style="width:100%; padding:10px; background:white; color:black; border-radius:10px; font-weight:900; cursor:pointer; margin-bottom:10px; border:none;">Apply Background</button>
-            <button onclick="clearBg()" style="width:100%; padding:10px; background:transparent; color:rgba(255,255,255,0.4); border:none; cursor:pointer;">Reset to Bubbles</button>
+            <button onclick="saveBgUrl()" style="width:100%; padding:10px; background:white; color:black; border-radius:10px; font-weight:900; cursor:pointer; margin-bottom:10px; border:none;">Apply Image</button>
+            <button onclick="clearToDefault()" style="width:100%; padding:10px; background:transparent; color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.2); border-radius:10px; cursor:pointer;">Reset to Default</button>
             <button onclick="closeCustomize()" style="margin-top:20px; padding:10px 30px; background:white; color:black; border-radius:20px; font-weight:900; border:none; cursor:pointer;">Close</button>
         </div>
     </div>
@@ -164,10 +161,6 @@
             document.documentElement.style.setProperty('--bg-glow', glow);
             document.documentElement.style.setProperty('--bg-base', base);
             
-            // Adjust search button to be slightly tinted toward the theme glow
-            document.getElementById('searchButton').style.backgroundColor = bgUrl ? 'white' : glow;
-            if(!bgUrl) document.getElementById('searchButton').style.color = (glow === '#11111d') ? 'white' : 'black';
-
             const container = document.getElementById('bg-container');
             if (bgUrl) {
                 container.style.backgroundImage = `url(${bgUrl})`;
@@ -176,6 +169,7 @@
                 Array.from(document.getElementsByClassName('bubble')).forEach(b => b.style.display = 'none');
             } else {
                 container.style.backgroundImage = 'none';
+                // Bubbles stay visible on colored backgrounds
                 Array.from(document.getElementsByClassName('bubble')).forEach(b => b.style.display = 'block');
             }
         }
@@ -191,13 +185,18 @@
             if(url) { localStorage.setItem('gemini-bg-url', url); applySettings(); }
         }
 
-        function clearBg() { localStorage.removeItem('gemini-bg-url'); applySettings(); }
+        function clearToDefault() {
+            localStorage.removeItem('gemini-bg-url');
+            localStorage.setItem('gemini-bg-glow', '#11111d');
+            localStorage.setItem('gemini-bg-base', '#050507');
+            applySettings();
+        }
 
         const container = document.getElementById('bg-container');
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 35; i++) {
             const b = document.createElement('div'); b.className = 'bubble';
-            const s = (2 + Math.random() * 6) + "vh"; b.style.width = s; b.style.height = s;
-            b.style.left = Math.random() * 100 + "vw"; b.style.animationDelay = (Math.random() * 4) + "s";
+            const s = (1.5 + Math.random() * 6) + "vh"; b.style.width = s; b.style.height = s;
+            b.style.left = Math.random() * 100 + "vw"; b.style.animationDelay = (Math.random() * 5) + "s";
             container.appendChild(b);
         }
 
@@ -217,7 +216,6 @@
                 openBrowser(url);
             }
         }
-
         function quickLaunch(url) { openBrowser(url); }
         function openBrowser(url) {
             document.getElementById('sidebar').classList.remove('active');

@@ -7,6 +7,7 @@
         :root { 
             --bg-base: #050507; 
             --bg-glow: #11111d; 
+            --sidebar-width: 280px;
         }
         body { 
             margin: 0; padding: 0; 
@@ -19,103 +20,97 @@
 
         .bg-container { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            z-index: -1; 
+            z-index: -2; 
             background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%); 
             transition: background 0.5s ease;
         }
-
+        #bubble-wrapper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
         .bubble { 
             position: absolute; bottom: -12vh; background: rgba(255, 255, 255, 0.1); 
             border: 1px solid rgba(255,255,255,0.05); border-radius: 50%; 
             animation: floatUp 7s infinite ease-in; filter: blur(2px); opacity: 0; 
         }
-
         @keyframes floatUp { 
             0% { transform: translateY(0) scale(1); opacity: 0; } 
+            20% { opacity: 0.6; }
             100% { transform: translateY(-125vh) scale(0.5); opacity: 0; } 
         }
+
+        #menuBtn { position: fixed; top: 25px; left: 25px; font-size: 30px; cursor: pointer; z-index: 3000; }
+        .sidebar {
+            position: fixed; top: 0; left: calc(-1 * var(--sidebar-width));
+            width: var(--sidebar-width); height: 100%; background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px); border-right: 1px solid rgba(255,255,255,0.1);
+            z-index: 2500; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column; padding: 100px 30px; box-sizing: border-box;
+        }
+        .sidebar.active { left: 0; }
+        .sidebar a { color: white; text-decoration: none; font-size: 20px; margin-bottom: 25px; opacity: 0.7; transition: 0.3s; display: flex; align-items: center; gap: 15px; }
+        .sidebar a:hover { opacity: 1; transform: translateX(10px); }
 
         header { margin-bottom: 40px; text-align: center; }
         .title { font-size: 6vh; font-weight: 900; text-transform: uppercase; color: white; letter-spacing: -3px; }
 
-        .home-btn { 
-            position: fixed; top: 25px; left: 25px; width: 50px; height: 50px; 
-            background: rgba(10,10,15,0.5); border: 1px solid rgba(255,255,255,0.2); 
-            backdrop-filter: blur(10px); border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            text-decoration: none; color: white; font-size: 22px; z-index: 100; transition: 0.3s; 
-        }
-        .home-btn:hover { background: white; color: black; }
-
         .partner-card { 
-            background: rgba(255, 255, 255, 0.03); 
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 30px; padding: 50px; 
-            text-align: center; backdrop-filter: blur(20px); 
-            transition: 0.4s; text-decoration: none; color: white; 
-            display: flex; flex-direction: column; align-items: center; width: 400px; 
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 30px; padding: 50px; text-align: center; backdrop-filter: blur(20px); 
+            transition: 0.4s; text-decoration: none; color: white; display: flex; 
+            flex-direction: column; align-items: center; width: 400px; 
         }
-        .partner-card:hover { 
-            transform: translateY(-10px); 
-            border-color: white; 
-            box-shadow: 0 0 40px rgba(255,255,255,0.05); 
-        }
-
+        .partner-card:hover { transform: translateY(-10px); border-color: white; }
         .partner-logo { width: 120px; height: 120px; margin-bottom: 30px; border-radius: 20px; }
-        .partner-card h3 { font-size: 28px; margin: 0; }
-        .partner-card p { opacity: 0.6; line-height: 1.6; margin: 15px 0 30px 0; }
-        
-        .visit-btn { 
-            padding: 14px 45px; background: white; color: black; 
-            border-radius: 40px; font-size: 14px; font-weight: 900; 
-            text-transform: uppercase; transition: 0.3s;
-        }
-        .partner-card:hover .visit-btn { background: #eee; }
+        .visit-btn { padding: 14px 45px; background: white; color: black; border-radius: 40px; font-size: 14px; font-weight: 900; text-transform: uppercase; }
     </style>
 </head>
 <body>
     <div class="bg-container" id="bg-container"></div>
-    <a href="index.html" class="home-btn">🏠</a>
-    
+    <div id="bubble-wrapper"></div>
+
+    <div id="menuBtn" onclick="toggleMenu()">☰</div>
+
+    <div class="sidebar" id="sidebar">
+        <a href="index.html"><span>🏠</span> Home</a>
+        <a href="games.html"><span>🎮</span> Games</a>
+        <a href="partners.html"><span>🤝</span> Partners</a>
+    </div>
+
     <header><div class="title">Partners</div></header>
 
     <a href="https://example.com" target="_blank" class="partner-card">
         <img src="https://images.emojiterra.com/google/android-11/512px/1f911.png" class="partner-logo">
         <h3>GamingBrothers 103</h3>
-        <p>Official partner of Gemini Hub. Leading the way in gaming content and community engagement.</p>
+        <p>Official partner of Gemini Hub. Leading the way in community engagement.</p>
         <div class="visit-btn">Visit Partner</div>
     </a>
 
     <script>
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
         function applyGlobalSettings() {
             const glow = localStorage.getItem('gemini-bg-glow') || '#11111d';
             const base = localStorage.getItem('gemini-bg-base') || '#050507';
             const bgUrl = localStorage.getItem('gemini-bg-url');
             const bgC = document.getElementById('bg-container');
+            const bWrap = document.getElementById('bubble-wrapper');
             
             if(bgC) {
                 bgC.style.background = `radial-gradient(circle at center, ${glow} 0%, ${base} 100%)`;
                 if (bgUrl) {
-                    bgC.style.backgroundImage = `url(${bgUrl})`; 
-                    bgC.style.backgroundSize = 'cover';
-                    bgC.style.backgroundPosition = 'center';
-                    Array.from(document.getElementsByClassName('bubble')).forEach(b => b.style.display = 'none');
+                    bgC.style.backgroundImage = `url(${bgUrl})`; bgC.style.backgroundSize = 'cover';
+                    bWrap.style.display = 'none';
                 } else {
                     bgC.style.backgroundImage = 'none';
-                    Array.from(document.getElementsByClassName('bubble')).forEach(b => b.style.display = 'block');
+                    bWrap.style.display = 'block';
                 }
             }
         }
 
-        // Bubbles Generator
-        const bgCont = document.getElementById('bg-container');
+        const bWrap = document.getElementById('bubble-wrapper');
         for (let i = 0; i < 20; i++) {
             const b = document.createElement('div'); b.className = 'bubble';
-            const s = (2+Math.random()*6)+"vh"; b.style.width = s; b.style.height = s;
+            const s = (2+Math.random()*6)+"vh"; b.style.width = s; b.style.height = b.style.width;
             b.style.left = Math.random()*100+"vw"; b.style.animationDelay = (Math.random()*4)+"s";
-            bgCont.appendChild(b);
+            bWrap.appendChild(b);
         }
-
         window.onload = applyGlobalSettings;
     </script>
 </body>

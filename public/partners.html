@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Gemini | Donators</title>
+    <title>Gemini | Partners</title>
     <style>
         :root { 
             --bg-base: #050507; 
             --bg-glow: #11111d; 
             --sidebar-width: 280px; 
+            --panel-bg: rgba(10, 10, 15, 0.5);
         }
         body { 
             margin: 0; padding: 0; 
@@ -42,15 +43,11 @@
         .sidebar a { color: white; text-decoration: none; font-size: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 25px; cursor: pointer; opacity: 0.7; transition: 0.3s; }
         .sidebar a:hover { opacity: 1; transform: translateX(10px); }
 
-        /* --- DONATOR CARD --- */
-        .donator-card { 
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 30px; padding: 40px; text-align: center; width: 400px; 
-            backdrop-filter: blur(20px); transition: 0.4s; 
-        }
-        .donator-card:hover { transform: translateY(-10px); border-color: #ffd700; box-shadow: 0 10px 40px rgba(255, 215, 0, 0.1); }
-        .donator-list { list-style: none; padding: 0; margin: 20px 0; font-size: 22px; font-weight: 500; }
-        .donator-list li { margin-bottom: 10px; color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+        /* --- PARTNER CARD --- */
+        .partner-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px; padding: 40px; text-align: center; width: 350px; backdrop-filter: blur(20px); transition: 0.4s; text-decoration: none; color: white; }
+        .partner-card:hover { transform: translateY(-10px); border-color: white; }
+        .partner-logo { width: 100px; height: 100px; margin-bottom: 20px; }
+        .visit-btn { margin-top: 20px; padding: 10px 30px; background: white; color: black; border-radius: 20px; font-weight: bold; display: inline-block; }
 
         /* --- CUSTOMIZE OVERLAY (POP ANIMATION) --- */
         #customOverlay { 
@@ -71,7 +68,7 @@
         #customOverlay.visible .customize-panel { transform: scale(1) translateY(0); }
 
         .theme-btn { height:45px; border-radius:12px; cursor:pointer; border: 2px solid transparent; transition: 0.2s; }
-        .theme-btn.active { border-color: white; transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.2); }
+        .theme-btn.active { border-color: white; transform: scale(1.1); }
     </style>
 </head>
 <body>
@@ -80,24 +77,21 @@
     <div id="menuBtn" onclick="toggleMenu()">☰</div>
 
     <div class="sidebar" id="sidebar">
-        <a href="index.html"><span>🏠</span> Home</a>
-        <a href="games.html"><span>🎮</span> Games</a>
-        <a href="partners.html"><span>🤝</span> Partners</a>
-        <a href="donators.html"><span>💵</span> Donators</a>
-        <a onclick="openCustomize()"><span>🎨</span> Customize</a>
+        <a href="index.html">🏠 Home</a>
+        <a href="games.html">🎮 Games</a>
+        <a href="partners.html">🤝 Partners</a>
+        <a href="donators.html">💵 Donators</a>
+        <a onclick="openCustomize()">🎨 Customize</a>
     </div>
 
-    <h1 style="font-size: 6vh; margin-bottom: 30px; font-weight: 900; letter-spacing: -2px;">DONATORS</h1>
+    <h1 style="font-size: 6vh; margin-bottom: 30px;">PARTNERS</h1>
 
-    <div class="donator-card">
-        <div style="font-size: 50px; margin-bottom: 10px;">👑</div>
-        <h3 style="font-size: 28px; margin: 0; letter-spacing: 2px;">ELITE DONATORS</h3>
-        <p style="opacity: 0.5; margin-bottom: 25px;">The legends supporting Gemini Hub</p>
-        <ul class="donator-list">
-            <li>GamingBrothers 103</li>
-            </ul>
-        <p style="font-size: 14px; opacity: 0.4; margin-top: 30px;">Thank you for keeping us online.</p>
-    </div>
+    <a href="https://103tutoringubgs.vercel.app/" target="_blank" class="partner-card">
+        <img src="https://images.emojiterra.com/google/android-11/512px/1f911.png" class="partner-logo">
+        <h3>GamingBrothers 103</h3>
+        <p>A top-tier partner for the Gemini Hub.</p>
+        <div class="visit-btn">VISIT</div>
+    </a>
 
     <div id="customOverlay">
         <div class="customize-panel">

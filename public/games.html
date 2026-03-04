@@ -24,7 +24,7 @@
         .bubble { position: absolute; bottom: -12vh; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.05); border-radius: 50%; animation: floatUp 7s infinite ease-in; filter: blur(2px); opacity: 0; }
         @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.6; } 100% { transform: translateY(-125vh) scale(0.5); opacity: 0; } }
 
-        /* --- SIDEBAR (ANIMATED SLIDE) --- */
+        /* --- SIDEBAR --- */
         #menuBtn { 
             position: fixed; top: 25px; left: 25px; font-size: 30px; 
             cursor: pointer; z-index: 3000; transition: transform 0.2s;
@@ -50,14 +50,26 @@
         .search-container { margin-bottom: 40px; width: 450px; }
         #gameSearch { width: 100%; padding: 15px 25px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); background: var(--panel-bg); color: white; outline: none; backdrop-filter: blur(15px); font-size: 16px; }
 
-        /* --- GRID --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; width: 90%; max-width: 1200px; padding-bottom: 80px; }
+        /* --- GRID (Fixed to 4 per row) --- */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); /* FORCED 4 COLUMNS */
+            gap: 25px; 
+            width: 95%; 
+            max-width: 1400px; 
+            padding-bottom: 80px; 
+        }
+
+        /* Mobile Responsive adjustment */
+        @media (max-width: 1100px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+
         .game-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; overflow: hidden; cursor: pointer; transition: 0.4s; backdrop-filter: blur(10px); }
         .game-card:hover { transform: translateY(-8px); border-color: white; }
         .card-image { width: 100%; height: 160px; background-size: cover; background-position: center; }
         .card-info { padding: 15px; text-align: center; }
 
-        /* --- CUSTOMIZE OVERLAY (POP ANIMATION) --- */
+        /* --- CUSTOMIZE OVERLAY --- */
         #customOverlay { 
             display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; 
             background:rgba(0,0,0,0.8); z-index:5000; 
@@ -118,15 +130,12 @@
             <div class="card-image" style="background-image: url('https://www.hindustantimes.com/ht-img/img/2026/02/13/400x225/epsteingame_1771015658279_1771015668259.jpg');"></div>
             <div class="card-info"><h3>Five Nights At Epsteins</h3></div>
         </div>
-    </div>
 
-    <div class="game-card" data-name="Apple Shooter" onclick="fetchAndPlay('https://cdn.jsdelivr.net/gh/exoticstecvr/Gemini-Games@main/appleshooter.html')">
+        <div class="game-card" data-name="apple shooter" onclick="fetchAndPlay('https://cdn.jsdelivr.net/gh/exoticstecvr/Gemini-Games@main/appleshooter.html')">
             <div class="card-image" style="background-image: url('https://imgs.crazygames.com/games/apple-shooter/cover_16x9-1711357016265.jpeg?metadata=none&quality=60&height=2408');"></div>
             <div class="card-info"><h3>Apple Shooter</h3></div>
         </div>
     </div>
-
-
     <div id="customOverlay">
         <div class="customize-panel">
             <h2 style="margin-top:0;">Color Theme</h2>
@@ -188,7 +197,10 @@
         function filterGames() {
             let input = document.getElementById('gameSearch').value.toLowerCase();
             let cards = document.getElementsByClassName('game-card');
-            for (let card of cards) { card.style.display = card.getAttribute('data-name').includes(input) ? "block" : "none"; }
+            for (let card of cards) { 
+                let name = card.getAttribute('data-name');
+                card.style.display = name && name.includes(input) ? "block" : "none"; 
+            }
         }
 
         async function fetchAndPlay(url) {

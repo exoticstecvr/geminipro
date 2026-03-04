@@ -6,19 +6,23 @@
     <style>
         :root { --accent: #ffffff; --bg-base: #050507; --bg-glow: #11111d; --sidebar-width: 280px; }
         body { margin: 0; padding: 0; background-color: var(--bg-base); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: white; overflow-x: hidden; }
+        
         #grid-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%); transition: background 0.5s ease; }
+        
         #menuBtn { position: fixed; top: 25px; left: 25px; font-size: 30px; cursor: pointer; z-index: 3000; }
         .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100%; background: rgba(8, 8, 10, 0.98); backdrop-filter: blur(40px); border-right: 1px solid rgba(255,255,255,0.05); z-index: 2500; display: flex; flex-direction: column; padding: 60px 30px; box-sizing: border-box; transform: translateX(-100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .sidebar.active { transform: translateX(0); }
         .sidebar label { font-size: 11px; opacity: 0.4; margin: 30px 0 20px 0; text-transform: uppercase; font-weight: 700; letter-spacing: 2px; }
         .sidebar a { color: white; text-decoration: none; font-size: 16px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px; cursor: pointer; opacity: 0.7; transition: 0.2s; }
         .sidebar a:hover { opacity: 1; transform: translateX(5px); }
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; width: 90%; max-width: 1300px; padding: 120px 0; }
-        .game-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; cursor: pointer; transition: 0.4s; backdrop-filter: blur(10px); }
-        .game-card:hover { transform: translateY(-8px); border-color: white; }
-        .card-image { width: 100%; height: 160px; background-size: cover; background-position: center; }
-        .card-info { padding: 15px; text-align: center; font-weight: 600; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 25px; width: 90%; max-width: 1400px; padding: 120px 0; }
+        .game-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; cursor: pointer; transition: 0.4s; backdrop-filter: blur(10px); text-decoration: none; color: white; }
+        .game-card:hover { transform: translateY(-8px); border-color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card-image { width: 100%; height: 160px; background-size: cover; background-position: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .card-info { padding: 15px; text-align: center; font-weight: 600; font-size: 14px; letter-spacing: 0.5px; }
+
         #customOverlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); z-index:5000; flex-direction:column; align-items:center; justify-content:center; opacity: 0; transition: 0.3s; }
         #customOverlay.visible { display: flex; opacity: 1; backdrop-filter: blur(20px); }
         .customize-panel { background:rgba(15,15,20,0.95); padding:40px; border-radius:30px; border:1px solid rgba(255,255,255,0.1); width:400px; text-align:center; }
@@ -29,7 +33,9 @@
 <body>
     <div class="bg-container" id="bg-container"></div>
     <canvas id="grid-canvas"></canvas>
+    
     <div id="menuBtn" onclick="toggleMenu()">☰</div>
+    
     <div class="sidebar" id="sidebar">
         <label>Explore</label>
         <a href="index.html">🏠 Home</a>
@@ -40,13 +46,51 @@
         <label>System</label>
         <a onclick="openCustomize()">🎨 Settings</a>
     </div>
-    <h1 style="font-size: 8vh; margin-top: 80px; letter-spacing: -4px;">GAMES</h1>
+
+    <h1 style="font-size: 8vh; margin-top: 80px; letter-spacing: -4px; font-weight: 900;">GAMES</h1>
+
     <div class="grid">
-        <div class="game-card" onclick="alert('Launch Script Here')">
+        <a href="https://1v1.lol" class="game-card">
+            <div class="card-image" style="background-image: url('https://play-lh.googleusercontent.com/6X2hH6M_v8uB6XyB4z7B_Y_pX_X7PzW6O1V-h_7YxW4W-R4A9Jk3I8B2m9B9A9A9A');"></div>
+            <div class="card-info">1v1.LOL</div>
+        </a>
+
+        <a href="https://retrobowl.me" class="game-card">
+            <div class="card-image" style="background-image: url('https://play-lh.googleusercontent.com/TM_8-W3F7X4x6z8_5S9H1z6Qz-Y3G8X4z8_5S9H1z6Qz-Y3G8X4z8_5S9H1z6Qz');"></div>
+            <div class="card-info">Retro Bowl</div>
+        </a>
+
+        <a href="https://bitlifeonline.com" class="game-card">
+            <div class="card-image" style="background-image: url('https://play-lh.googleusercontent.com/9v6v-R5z8M5L8Z9H-9v6v-R5z8M5L8Z9H-9v6v-R5z8M5L8Z9H-9v6v-R5z8M5L8Z9H');"></div>
+            <div class="card-info">BitLife</div>
+        </a>
+
+        <a href="https://slope.io" class="game-card">
+            <div class="card-image" style="background-image: url('https://imgs.crazygames.com/games/slope/cover-1585226400325.png?auto=format,compress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop');"></div>
+            <div class="card-info">Slope</div>
+        </a>
+
+        <a href="https://appleshooter.com" class="game-card">
             <div class="card-image" style="background-image: url('https://imgs.crazygames.com/games/apple-shooter/cover_16x9-1711357016265.jpeg');"></div>
             <div class="card-info">Apple Shooter</div>
-        </div>
-        </div>
+        </a>
+
+        <a href="https://orteil.dashnet.org/cookieclicker/" class="game-card">
+            <div class="card-image" style="background-image: url('https://play-lh.googleusercontent.com/vD9_9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A9A');"></div>
+            <div class="card-info">Cookie Clicker</div>
+        </a>
+
+        <a href="https://classic.minecraft.net" class="game-card">
+            <div class="card-image" style="background-image: url('https://www.minecraft.net/content/dam/games/minecraft/key-art/Minecraft-Classic.jpg');"></div>
+            <div class="card-info">Minecraft Classic</div>
+        </a>
+
+        <a href="https://shellshock.io" class="game-card">
+            <div class="card-image" style="background-image: url('https://play-lh.googleusercontent.com/8-W3F7X4x6z8_5S9H1z6Qz-Y3G8X4z8_5S9H1z6Qz-Y3G8X4z8_5S9H1z6Qz');"></div>
+            <div class="card-info">Shell Shockers</div>
+        </a>
+    </div>
+
     <div id="customOverlay"><div class="customize-panel">
         <h2 style="margin-top:0;">Color Theme</h2>
         <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-bottom:25px;">
@@ -63,21 +107,43 @@
         <button onclick="clearToDefault()" style="width:100%; padding:10px; background:transparent; color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.2); border-radius:10px; cursor:pointer;">Reset</button>
         <button onclick="closeCustomize()" style="margin-top:20px; padding:10px 30px; background:white; color:black; border-radius:20px; font-weight:900; border:none; cursor:pointer;">Close</button>
     </div></div>
+
     <script>
+        // Grid Particle Background
         const canvas = document.getElementById('grid-canvas'); const ctx = canvas.getContext('2d'); let nodes = []; let mouse = { x: -1000, y: -1000 };
         class Node { constructor() { this.baseX = Math.random() * canvas.width; this.baseY = Math.random() * canvas.height; this.x = this.baseX; this.y = this.baseY; this.vx = (Math.random() - 0.5) * 0.4; this.vy = (Math.random() - 0.5) * 0.4; }
             update() { this.baseX += this.vx; this.baseY += this.vy; if (this.baseX < 0) this.baseX = canvas.width; if (this.baseX > canvas.width) this.baseX = 0; if (this.baseY < 0) this.baseY = canvas.height; if (this.baseY > canvas.height) this.baseY = 0; let dx = mouse.x - this.baseX; let dy = mouse.y - this.baseY; let dist = Math.sqrt(dx*dx + dy*dy); if (dist < 400) { let pull = Math.pow((400 - dist) / 400, 2); this.x = this.baseX + dx * pull * 0.9; this.y = this.baseY + dy * pull * 0.9; } else { this.x = this.baseX; this.y = this.baseY; } } }
         function initGrid() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; nodes = []; for(let i=0; i<250; i++) nodes.push(new Node()); }
         function drawGrid() { ctx.clearRect(0, 0, canvas.width, canvas.height); for(let i=0; i<nodes.length; i++) { nodes[i].update(); for(let j=i+1; j<nodes.length; j++) { let dist = Math.sqrt(Math.pow(nodes[i].x-nodes[j].x, 2) + Math.pow(nodes[i].y-nodes[j].y, 2)); if(dist < 200) { ctx.strokeStyle = `rgba(255, 255, 255, ${(1-(dist/200))*0.12})`; ctx.lineWidth = 0.6; ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke(); } } } requestAnimationFrame(drawGrid); }
         window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }); window.addEventListener('resize', initGrid); initGrid(); drawGrid();
+
+        // UI Functions
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
         function openCustomize() { const overlay = document.getElementById('customOverlay'); overlay.style.display = 'flex'; setTimeout(() => overlay.classList.add('visible'), 10); toggleMenu(); }
         function closeCustomize() { const overlay = document.getElementById('customOverlay'); overlay.classList.remove('visible'); setTimeout(() => overlay.style.display = 'none', 300); }
-        function applySettings() { const glow = localStorage.getItem('gemini-bg-glow') || '#11111d'; const base = localStorage.getItem('gemini-bg-base') || '#050507'; const bgUrl = localStorage.getItem('gemini-bg-url'); document.documentElement.style.setProperty('--bg-glow', glow); document.documentElement.style.setProperty('--bg-base', base); if (bgUrl) { document.getElementById('bg-container').style.backgroundImage = `url(${bgUrl})`; document.getElementById('bg-container').style.backgroundSize = 'cover'; document.getElementById('grid-canvas').style.display = 'none'; } else { document.getElementById('bg-container').style.backgroundImage = 'none'; document.getElementById('grid-canvas').style.display = 'block'; } updateButtonHighlight(); }
+        
+        function applySettings() { 
+            const glow = localStorage.getItem('gemini-bg-glow') || '#11111d'; 
+            const base = localStorage.getItem('gemini-bg-base') || '#050507'; 
+            const bgUrl = localStorage.getItem('gemini-bg-url'); 
+            document.documentElement.style.setProperty('--bg-glow', glow); 
+            document.documentElement.style.setProperty('--bg-base', base); 
+            if (bgUrl) { 
+                document.getElementById('bg-container').style.backgroundImage = `url(${bgUrl})`; 
+                document.getElementById('bg-container').style.backgroundSize = 'cover'; 
+                document.getElementById('grid-canvas').style.display = 'none'; 
+            } else { 
+                document.getElementById('bg-container').style.backgroundImage = 'none'; 
+                document.getElementById('grid-canvas').style.display = 'block'; 
+            } 
+            updateButtonHighlight(); 
+        }
+
         function setTheme(g, b) { localStorage.setItem('gemini-bg-glow', g); localStorage.setItem('gemini-bg-base', b); applySettings(); }
         function saveBgUrl() { const url = document.getElementById('bgUrlInput').value.trim(); if(url) { localStorage.setItem('gemini-bg-url', url); applySettings(); } }
         function clearToDefault() { localStorage.removeItem('gemini-bg-url'); setTheme('#11111d', '#050507'); }
         function updateButtonHighlight() { const cur = localStorage.getItem('gemini-bg-glow') || '#11111d'; document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-glow') === cur)); }
+        
         window.onload = applySettings;
     </script>
 </body>

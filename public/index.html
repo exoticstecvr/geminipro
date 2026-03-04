@@ -33,7 +33,12 @@
             height: 100vh; width: 100vw; overflow: hidden; color: white;
         }
 
-        /* --- BACKGROUND & BUBBLES --- */
+        /* --- INTENSE GRAVITY GRID --- */
+        #grid-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+
         .bg-container {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -2;
@@ -41,164 +46,88 @@
             transition: background 0.5s ease;
         }
 
-        #bubble-wrapper {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .bubble {
-            position: absolute; bottom: -12vh; background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255,255,255,0.05); border-radius: 50%;
-            animation: floatUp 7s infinite ease-in; filter: blur(2px); opacity: 0;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 0; }
-            20% { opacity: 0.6; }
-            100% { transform: translateY(-125vh) scale(0.5); opacity: 0; }
-        }
-
-        /* --- MENU BUTTON --- */
-        #menuBtn { 
-            position: fixed; top: 25px; left: 25px; font-size: 30px; 
-            cursor: pointer; z-index: 3000; transition: transform 0.2s;
-        }
+        /* --- UI ELEMENTS (UNCHANGED) --- */
+        #menuBtn { position: fixed; top: 25px; left: 25px; font-size: 30px; cursor: pointer; z-index: 3000; transition: transform 0.2s; }
         #menuBtn:hover { transform: scale(1.1); }
         
         .sidebar {
-            position: fixed; top: 0; left: 0;
-            width: var(--sidebar-width); height: 100%; background: rgba(10, 10, 15, 0.95);
-            backdrop-filter: blur(20px); border-right: 1px solid rgba(255,255,255,0.1);
-            z-index: 2500; 
-            display: flex; flex-direction: column; padding: 100px 30px; box-sizing: border-box;
-            transform: translateX(-100%);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100%; 
+            background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(20px); border-right: 1px solid rgba(255,255,255,0.1);
+            z-index: 2500; display: flex; flex-direction: column; padding: 100px 30px; box-sizing: border-box;
+            transform: translateX(-100%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .sidebar.active { transform: translateX(0); }
-        .sidebar a { color: white; text-decoration: none; font-size: 20px; margin-bottom: 25px; opacity: 0.7; transition: 0.3s; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .sidebar a { color: white; text-decoration: none; font-size: 20px; margin-bottom: 25px; opacity: 0.7; transition: 0.3s; display: flex; align-items: center; gap: 15px; }
         .sidebar a:hover { opacity: 1; transform: translateX(10px); }
 
-        /* --- UI ELEMENTS --- */
-        #date { position: absolute; top: 30px; font-size: 1.4vh; opacity: 0.4; letter-spacing: 8px; font-weight: 600; text-transform: uppercase; }
-        .logo { font-size: 11vh; font-weight: 900; margin-bottom: 10px; letter-spacing: -5px; }
+        .logo { font-size: 11vh; font-weight: 900; margin-bottom: 10px; letter-spacing: -5px; pointer-events: none; text-shadow: 0 0 20px rgba(255,255,255,0.1); }
 
         .search-wrapper {
             display: flex; width: 55vw; height: 8vh; background: var(--panel-bg);
             backdrop-filter: blur(25px); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 30px;
+            margin-bottom: 30px; z-index: 10;
         }
         #urlInput { flex: 1; background: transparent; border: none; outline: none; color: white; padding: 0 30px; font-size: 2.5vh; }
         #searchButton { width: 10vw; background: white; color: black; border: none; font-weight: 900; cursor: pointer; border-radius: 0 14px 14px 0; }
 
-        /* --- QUICK LINKS --- */
-        .quick-links { display: flex; gap: 30px; margin-bottom: 20px; }
-        .quick-btn { 
-            width: 45px; height: 45px; cursor: pointer; transition: 0.3s; 
-            background: none; border: none; display: flex; align-items: center; justify-content: center;
-        }
-        .quick-btn:hover { transform: translateY(-5px); filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
+        .quick-links { display: flex; gap: 30px; margin-bottom: 20px; z-index: 10; }
+        .quick-btn { width: 45px; height: 45px; cursor: pointer; transition: 0.3s; background: none; border: none; }
+        .quick-btn:hover { transform: translateY(-5px); filter: drop-shadow(0 0 8px white); }
         .quick-btn img { width: 100%; height: 100%; object-fit: contain; }
 
-        /* --- STATUS DOCK --- */
-        .status-dock {
-            position: fixed; bottom: 30px;
-            display: flex; align-items: center; gap: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 12px 30px; border-radius: 50px;
-            backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1);
-            font-size: 18px;
-        }
-        .status-divider { opacity: 0.2; width: 1px; height: 20px; background: white; }
-        .dock-link { color: white; text-decoration: none; opacity: 0.8; transition: 0.3s; }
-        .dock-link:hover { opacity: 1; }
-
-        /* --- CUSTOMIZE OVERLAY --- */
-        #customOverlay { 
-            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(0px); z-index: 5000; 
-            flex-direction: column; align-items: center; justify-content: center; 
-            transition: backdrop-filter 0.3s ease, opacity 0.3s ease;
-            opacity: 0;
-        }
+        #customOverlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); z-index: 5000; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
         #customOverlay.visible { display: flex; opacity: 1; backdrop-filter: blur(20px); }
+        .customize-panel { background: rgba(15,15,20,0.95); padding: 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); width: 350px; text-align: center; transform: scale(0.8); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #customOverlay.visible .customize-panel { transform: scale(1); }
 
-        .customize-panel {
-            background: rgba(15,15,20,0.95); padding: 40px; border-radius: 30px; 
-            border: 1px solid rgba(255,255,255,0.1); width: 350px; text-align: center;
-            transform: scale(0.8) translateY(20px);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        #customOverlay.visible .customize-panel { transform: scale(1) translateY(0); }
-
-        .theme-btn { height: 45px; border-radius: 12px; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+        .theme-btn { height: 45px; border-radius: 12px; cursor: pointer; border: 2px solid transparent; }
         .theme-btn.active { border-color: white; transform: scale(1.1); }
-
-        #backBtn { display: none; position: fixed; top: 25px; right: 25px; width: 50px; height: 50px; background: rgba(10,10,15,0.9); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; color: white; font-size: 24px; align-items: center; justify-content: center; cursor: pointer; z-index: 4000; }
+        
         #iframeWindow { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none; z-index: 3500; background: white; }
+        #backBtn { display: none; position: fixed; top: 25px; right: 25px; width: 50px; height: 50px; background: black; border: 1px solid white; border-radius: 50%; color: white; font-size: 24px; align-items: center; justify-content: center; cursor: pointer; z-index: 4000; }
     </style>
 </head>
 <body>
 
     <div class="bg-container" id="bg-container"></div>
-    <div id="bubble-wrapper"></div>
+    <canvas id="grid-canvas"></canvas>
 
     <div id="menuBtn" onclick="toggleMenu()">☰</div>
     <div id="backBtn" onclick="closeBrowser()">←</div>
 
     <div class="sidebar" id="sidebar">
-        <a href="games.html"><span>🎮</span> Games</a>
-        <a href="partners.html"><span>🤝</span> Partners</a>
-        <a href="donators.html"><span>💵</span> Donators</a>
-        <a onclick="openCustomize()"><span>🎨</span> Customize</a>
-        <a onclick="toggleMenu()"><span>🏠</span> Home</a>
-        <a id="sidebar-discord-link" href="#" target="_blank" style="margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-            <span>💬</span> Join Discord
-        </a>
+        <a href="games.html">🎮 Games</a>
+        <a href="partners.html">🤝 Partners</a>
+        <a href="donators.html">💵 Donators</a>
+        <a href="#" onclick="openCustomize()">🎨 Customize</a>
+        <a href="#" onclick="toggleMenu()">🏠 Home</a>
     </div>
-
-    <div id="date">LOADING...</div>
 
     <div class="logo">GEMINI</div>
 
     <div class="search-wrapper">
-        <input type="text" id="urlInput" placeholder="Explore...">
-        <button id="searchButton" onclick="launch()">Explore</button>
+        <input type="text" id="urlInput" placeholder="Enter URL or Search...">
+        <button id="searchButton" onclick="launch()">GO</button>
     </div>
 
     <div class="quick-links">
-        <div class="quick-btn" title="Google" onclick="quickLaunch('https://google.com')"><img src="/google.ico"></div>
-        <div class="quick-btn" title="YouTube" onclick="quickLaunch('https://youtube.com')"><img src="/youtube.ico"></div>
-        <div class="quick-btn" title="Discord" onclick="quickLaunch('https://discord.com')"><img src="/discord.ico"></div>
-        <div class="quick-btn" title="DuckDuckGo" onclick="quickLaunch('https://duckduckgo.com')"><img src="/duckduckgo.ico"></div>
-        <div class="quick-btn" title="CrazyGames" onclick="quickLaunch('https://crazygames.com')"><img src="/crazygames.ico"></div>
-    </div>
-
-    <div class="status-dock">
-        <div id="clock">00:00:00</div>
-        <div class="status-divider"></div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-            <span id="batteryText">100%</span>
-        </div>
-        <div class="status-divider"></div>
-        <a id="dock-discord-link" class="dock-link" href="#" target="_blank">Discord</a>
+        <div class="quick-btn" onclick="quickLaunch('https://google.com')"><img src="public/google.ico"></div>
+        <div class="quick-btn" onclick="quickLaunch('https://youtube.com')"><img src="public/youtube.ico"></div>
+        <div class="quick-btn" onclick="quickLaunch('https://discord.com')"><img src="public/discord.ico"></div>
+        <div class="quick-btn" onclick="quickLaunch('https://crazygames.com')"><img src="public/crazygames.ico"></div>
     </div>
 
     <div id="customOverlay">
         <div class="customize-panel">
-            <h2 style="margin-top:0;">Color Theme</h2>
-            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-bottom:30px;">
-                <button class="theme-btn" data-glow="#11111d" onclick="setTheme('#11111d', '#050507')" style="background:radial-gradient(circle, #11111d, #050507);"></button>
-                <button class="theme-btn" data-glow="#0a2b0a" onclick="setTheme('#0a2b0a', '#020a02')" style="background:radial-gradient(circle, #0a2b0a, #020a02);"></button>
-                <button class="theme-btn" data-glow="#2b0a0a" onclick="setTheme('#2b0a0a', '#0a0202')" style="background:radial-gradient(circle, #2b0a0a, #0a0202);"></button>
-                <button class="theme-btn" data-glow="#0a1b2b" onclick="setTheme('#0a1b2b', '#02050a')" style="background:radial-gradient(circle, #0a1b2b, #02050a);"></button>
-                <button class="theme-btn" data-glow="#1b0a2b" onclick="setTheme('#1b0a2b', '#05020a')" style="background:radial-gradient(circle, #1b0a2b, #05020a);"></button>
-                <button class="theme-btn" data-glow="#0a2b27" onclick="setTheme('#0a2b27', '#020a09')" style="background:radial-gradient(circle, #0a2b27, #020a09);"></button>
+            <h2>Themes</h2>
+            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-bottom:20px;">
+                <button class="theme-btn" data-glow="#11111d" onclick="setTheme('#11111d', '#050507')" style="background: radial-gradient(#11111d, #050507);"></button>
+                <button class="theme-btn" data-glow="#0a2b0a" onclick="setTheme('#0a2b0a', '#020a02')" style="background: radial-gradient(#0a2b0a, #020a02);"></button>
+                <button class="theme-btn" data-glow="#2b0a0a" onclick="setTheme('#2b0a0a', '#0a0202')" style="background: radial-gradient(#2b0a0a, #0a0202);"></button>
             </div>
-            <h2>Background URL</h2>
-            <input type="text" id="bgUrlInput" placeholder="Paste GIF or Image URL..." style="width:100%; padding:10px; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:10px; margin-bottom:10px; box-sizing:border-box;">
-            <button onclick="saveBgUrl()" style="width:100%; padding:10px; background:white; color:black; border-radius:10px; font-weight:900; cursor:pointer; margin-bottom:10px; border:none;">Apply Image</button>
-            <button onclick="clearToDefault()" style="width:100%; padding:10px; background:transparent; color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.2); border-radius:10px; cursor:pointer;">Reset</button>
+            <input type="text" id="bgUrlInput" placeholder="Custom Image URL..." style="width:100%; padding:10px; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:10px; margin-bottom:10px;">
+            <button onclick="saveBgUrl()" style="width:100%; padding:10px; background:white; color:black; border-radius:10px; font-weight:bold; cursor:pointer;">Apply Image</button>
+            <button onclick="clearToDefault()" style="width:100%; margin-top:10px; background:transparent; color:white; border:1px solid white; border-radius:10px; cursor:pointer; padding:5px;">Reset</button>
             <button onclick="closeCustomize()" style="margin-top:20px; padding:10px 30px; background:white; color:black; border-radius:20px; font-weight:900; border:none; cursor:pointer;">Close</button>
         </div>
     </div>
@@ -206,34 +135,100 @@
     <iframe id="iframeWindow"></iframe>
 
     <script>
-        // --- DISCORD WIDGET LOGIC ---
-        async function fetchDiscordInvite() {
-            const serverID = '1478581914230194259';
-            const sidebarBtn = document.getElementById('sidebar-discord-link');
-            const dockBtn = document.getElementById('dock-discord-link');
-            
-            try {
-                const response = await fetch(`https://discord.com/api/guilds/${serverID}/widget.json`);
-                const data = await response.json();
+        const canvas = document.getElementById('grid-canvas');
+        const ctx = canvas.getContext('2d');
+        let nodes = [];
+        let mouse = { x: -1000, y: -1000 };
+
+        class Node {
+            constructor() {
+                this.baseX = Math.random() * canvas.width;
+                this.baseY = Math.random() * canvas.height;
+                this.x = this.baseX;
+                this.y = this.baseY;
+                // Randomized slow drift
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+            }
+            update() {
+                this.baseX += this.vx;
+                this.baseY += this.vy;
                 
-                if (data.instant_invite) {
-                    sidebarBtn.href = data.instant_invite;
-                    dockBtn.href = data.instant_invite;
+                // Wrap around edges
+                if (this.baseX < 0) this.baseX = canvas.width;
+                if (this.baseX > canvas.width) this.baseX = 0;
+                if (this.baseY < 0) this.baseY = canvas.height;
+                if (this.baseY > canvas.height) this.baseY = 0;
+
+                // Strong Gravity Physics
+                let dx = mouse.x - this.baseX;
+                let dy = mouse.y - this.baseY;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                let maxDist = 300; // Gravity reach
+
+                if (dist < maxDist) {
+                    let pull = Math.pow((maxDist - dist) / maxDist, 2); // Exponential pull
+                    this.x = this.baseX + dx * pull * 0.8;
+                    this.y = this.baseY + dy * pull * 0.8;
+                } else {
+                    this.x = this.baseX;
+                    this.y = this.baseY;
                 }
-            } catch (err) {
-                console.error("Discord Invite fetch failed:", err);
             }
         }
 
+        function initGrid() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            nodes = [];
+            // Increased node count for a tighter geometric look
+            for(let i=0; i<120; i++) nodes.push(new Node());
+        }
+
+        function drawGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for(let i=0; i<nodes.length; i++) {
+                nodes[i].update();
+                for(let j=i+1; j<nodes.length; j++) {
+                    let dx = nodes[i].x - nodes[j].x;
+                    let dy = nodes[i].y - nodes[j].y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+                    
+                    if(dist < 200) {
+                        // Calculate brightness based on distance and mouse proximity
+                        let mouseDx = mouse.x - nodes[i].x;
+                        let mouseDy = mouse.y - nodes[i].y;
+                        let mouseDist = Math.sqrt(mouseDx*mouseDx + mouseDy*mouseDy);
+                        
+                        // Lines glow brighter when sucked in by gravity
+                        let alpha = (1 - (dist / 200)) * 0.2;
+                        if (mouseDist < 300) alpha *= 2.5; 
+
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(drawGrid);
+        }
+
+        window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        window.addEventListener('resize', initGrid);
+        initGrid(); drawGrid();
+
+        // HUB LOGIC
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
-        
         function openCustomize() { 
             const overlay = document.getElementById('customOverlay');
             overlay.style.display = 'flex';
             setTimeout(() => overlay.classList.add('visible'), 10);
             toggleMenu(); 
         }
-
         function closeCustomize() { 
             const overlay = document.getElementById('customOverlay');
             overlay.classList.remove('visible');
@@ -244,68 +239,34 @@
             const glow = localStorage.getItem('gemini-bg-glow') || '#11111d';
             const base = localStorage.getItem('gemini-bg-base') || '#050507';
             const bgUrl = localStorage.getItem('gemini-bg-url');
-
             document.documentElement.style.setProperty('--bg-glow', glow);
             document.documentElement.style.setProperty('--bg-base', base);
-            
             const container = document.getElementById('bg-container');
+            const canvasEl = document.getElementById('grid-canvas');
             if (bgUrl) {
                 container.style.backgroundImage = `url(${bgUrl})`;
                 container.style.backgroundSize = 'cover';
-                document.getElementById('bubble-wrapper').style.display = 'none';
+                canvasEl.style.display = 'none';
             } else {
                 container.style.backgroundImage = 'none';
-                document.getElementById('bubble-wrapper').style.display = 'block';
+                canvasEl.style.display = 'block';
             }
         }
 
-        function setTheme(glow, base) {
-            localStorage.setItem('gemini-bg-glow', glow);
-            localStorage.setItem('gemini-bg-base', base);
-            applySettings();
-        }
-
-        function saveBgUrl() {
-            const url = document.getElementById('bgUrlInput').value.trim();
-            if(url) { localStorage.setItem('gemini-bg-url', url); applySettings(); }
-        }
-
-        function clearToDefault() {
-            localStorage.removeItem('gemini-bg-url');
-            applySettings();
-        }
-
-        // Bubbles Logic
-        const bubbleWrap = document.getElementById('bubble-wrapper');
-        for (let i = 0; i < 35; i++) {
-            const b = document.createElement('div'); b.className = 'bubble';
-            const s = (1.5 + Math.random() * 6) + "vh"; b.style.width = s; b.style.height = s;
-            b.style.left = Math.random() * 100 + "vw"; b.style.animationDelay = (Math.random() * 5) + "s";
-            bubbleWrap.appendChild(b);
-        }
-
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { hour12: false });
-            document.getElementById('date').textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-            if (navigator.getBattery) {
-                navigator.getBattery().then(b => { document.getElementById('batteryText').textContent = Math.round(b.level * 100) + "%"; });
-            }
-        }
-        setInterval(updateClock, 1000); updateClock();
+        function setTheme(glow, base) { localStorage.setItem('gemini-bg-glow', glow); localStorage.setItem('gemini-bg-base', base); applySettings(); }
+        function saveBgUrl() { const url = document.getElementById('bgUrlInput').value.trim(); if(url) { localStorage.setItem('gemini-bg-url', url); applySettings(); } }
+        function clearToDefault() { localStorage.removeItem('gemini-bg-url'); applySettings(); }
 
         function launch() {
-            const val = document.getElementById('urlInput').value.trim();
+            let val = document.getElementById('urlInput').value.trim();
             if(val) {
-                let url = val;
-                if (!url.includes(".") || url.includes(" ")) url = "https://lite.duckduckgo.com/lite/?q=" + encodeURIComponent(url);
-                else if (!url.startsWith("http")) url = "https://" + url;
-                openBrowser(url);
+                if (!val.includes(".") || val.includes(" ")) val = "https://lite.duckduckgo.com/lite/?q=" + encodeURIComponent(val);
+                else if (!val.startsWith("http")) val = "https://" + val;
+                openBrowser(val);
             }
         }
         function quickLaunch(url) { openBrowser(url); }
         function openBrowser(url) {
-            document.getElementById('sidebar').classList.remove('active');
             document.getElementById('iframeWindow').style.display = "block";
             document.getElementById('backBtn').style.display = "flex";
             document.getElementById('menuBtn').style.display = "none";
@@ -318,11 +279,7 @@
             document.getElementById('iframeWindow').src = "";
         }
         document.getElementById('urlInput').onkeydown = (e) => { if(e.key === 'Enter') launch(); };
-        
-        window.addEventListener('load', () => {
-            applySettings();
-            fetchDiscordInvite(); // Runs the Discord Link update on load
-        });
+        window.onload = applySettings;
     </script>
 </body>
 </html>

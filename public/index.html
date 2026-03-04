@@ -33,7 +33,7 @@
             height: 100vh; width: 100vw; overflow: hidden; color: white;
         }
 
-        /* --- MAX DENSITY GRAVITY GRID --- */
+        /* --- FULL SCREEN GEOMETRIC WEB --- */
         #grid-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; pointer-events: none;
@@ -46,59 +46,61 @@
             transition: background 0.5s ease;
         }
 
-        /* --- MENU & SIDEBAR --- */
+        /* --- MINIMALIST LINE ICONS --- */
+        .icon { width: 24px; height: 24px; border: 2px solid white; border-radius: 4px; display: inline-block; position: relative; flex-shrink: 0; }
+        .icon-games { border-radius: 6px; } .icon-games::after { content: ''; position: absolute; top: 50%; left: 20%; width: 60%; height: 2px; background: white; }
+        .icon-partners { border-radius: 50%; border-style: dashed; }
+        .icon-donators { border: none; height: 24px; width: 12px; border-left: 2px solid white; border-right: 2px solid white; transform: skewX(-15deg); }
+        .icon-customize { border-radius: 2px; background: linear-gradient(45deg, transparent 50%, white 50%); }
+        .icon-home { width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-bottom: 20px solid white; border-top: none; background: none; }
+
+        /* --- SIDEBAR --- */
         #menuBtn { position: fixed; top: 25px; left: 25px; font-size: 30px; cursor: pointer; z-index: 3000; transition: transform 0.2s; }
-        #menuBtn:hover { transform: scale(1.1); }
         
         .sidebar {
             position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100%; 
-            background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(20px); border-right: 1px solid rgba(255,255,255,0.1);
+            background: rgba(10, 10, 15, 0.98); backdrop-filter: blur(30px); border-right: 1px solid rgba(255,255,255,0.05);
             z-index: 2500; display: flex; flex-direction: column; padding: 100px 30px; box-sizing: border-box;
-            transform: translateX(-100%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateX(-100%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .sidebar.active { transform: translateX(0); }
-        .sidebar a { color: white; text-decoration: none; font-size: 20px; margin-bottom: 25px; opacity: 0.7; transition: 0.3s; display: flex; align-items: center; gap: 15px; cursor: pointer; }
-        .sidebar a:hover { opacity: 1; transform: translateX(10px); }
+        .sidebar a { color: white; text-decoration: none; font-size: 18px; font-weight: 500; margin-bottom: 30px; opacity: 0.6; transition: 0.3s; display: flex; align-items: center; gap: 20px; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
+        .sidebar a:hover { opacity: 1; transform: translateX(5px); }
 
-        /* --- UI ELEMENTS --- */
-        .logo { font-size: 11vh; font-weight: 900; margin-bottom: 10px; letter-spacing: -5px; pointer-events: none; }
-
+        /* --- SEARCH & LOGO --- */
+        .logo { font-size: 12vh; font-weight: 900; margin-bottom: 10px; letter-spacing: -6px; pointer-events: none; }
         .search-wrapper {
-            display: flex; width: 55vw; height: 8vh; background: var(--panel-bg);
-            backdrop-filter: blur(25px); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 30px; z-index: 10;
+            display: flex; width: 60vw; height: 8vh; background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(20px); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 40px; z-index: 10;
         }
-        #urlInput { flex: 1; background: transparent; border: none; outline: none; color: white; padding: 0 30px; font-size: 2.5vh; }
-        #searchButton { width: 10vw; background: white; color: black; border: none; font-weight: 900; cursor: pointer; border-radius: 0 14px 14px 0; }
+        #urlInput { flex: 1; background: transparent; border: none; outline: none; color: white; padding: 0 30px; font-size: 2.2vh; font-family: 'Inter'; }
+        #searchButton { width: 8vw; background: white; color: black; border: none; font-weight: 900; cursor: pointer; border-radius: 0 11px 11px 0; text-transform: uppercase; }
 
-        .quick-links { display: flex; gap: 30px; margin-bottom: 20px; z-index: 10; }
-        .quick-btn { width: 45px; height: 45px; cursor: pointer; transition: 0.3s; background: none; border: none; }
-        .quick-btn:hover { transform: translateY(-5px); filter: drop-shadow(0 0 8px white); }
+        .quick-links { display: flex; gap: 40px; z-index: 10; }
+        .quick-btn { width: 42px; height: 42px; cursor: pointer; transition: 0.4s; background: none; border: none; opacity: 0.8; }
+        .quick-btn:hover { transform: scale(1.2); opacity: 1; filter: drop-shadow(0 0 10px white); }
         .quick-btn img { width: 100%; height: 100%; object-fit: contain; }
 
-        /* --- RESTORED CUSTOMIZATION MENU --- */
+        /* --- CUSTOMIZATION OVERLAY --- */
         #customOverlay { 
             display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; 
-            background:rgba(0,0,0,0.8); z-index:5000; 
-            flex-direction:column; align-items:center; justify-content:center; 
-            transition: backdrop-filter 0.3s ease, opacity 0.3s ease;
-            opacity: 0;
+            background:rgba(0,0,0,0.85); z-index:5000; flex-direction:column; align-items:center; justify-content:center; 
+            transition: 0.3s; opacity: 0;
         }
-        #customOverlay.visible { display: flex; opacity: 1; backdrop-filter: blur(20px); }
-        
+        #customOverlay.visible { display: flex; opacity: 1; backdrop-filter: blur(25px); }
         .customize-panel {
-            background:rgba(15,15,20,0.95); padding:40px; border-radius:30px; 
-            border:1px solid rgba(255,255,255,0.1); width:350px; text-align:center;
-            transform: scale(0.8) translateY(20px);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background:rgba(10,10,12,0.98); padding:50px; border-radius:25px; 
+            border:1px solid rgba(255,255,255,0.1); width:380px; text-align:center;
+            transform: scale(0.9); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        #customOverlay.visible .customize-panel { transform: scale(1) translateY(0); }
+        #customOverlay.visible .customize-panel { transform: scale(1); }
 
-        .theme-btn { height:45px; border-radius:12px; cursor:pointer; border: 2px solid transparent; transition: 0.2s; }
-        .theme-btn.active { border-color: white; transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.2); }
+        .theme-btn { height:50px; border-radius:10px; cursor:pointer; border: 2px solid transparent; transition: 0.2s; }
+        .theme-btn.active { border-color: white; transform: scale(1.05); }
         
         #iframeWindow { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none; z-index: 3500; background: white; }
-        #backBtn { display: none; position: fixed; top: 25px; right: 25px; width: 50px; height: 50px; background: black; border: 1px solid white; border-radius: 50%; color: white; font-size: 24px; align-items: center; justify-content: center; cursor: pointer; z-index: 4000; }
+        #backBtn { display: none; position: fixed; top: 25px; right: 25px; width: 55px; height: 55px; background: black; border: 1px solid white; border-radius: 50%; color: white; font-size: 24px; align-items: center; justify-content: center; cursor: pointer; z-index: 4000; }
     </style>
 </head>
 <body>
@@ -110,17 +112,17 @@
     <div id="backBtn" onclick="closeBrowser()">←</div>
 
     <div class="sidebar" id="sidebar">
-        <a href="games.html"><span>🎮</span> Games</a>
-        <a href="partners.html"><span>🤝</span> Partners</a>
-        <a href="donators.html"><span>💵</span> Donators</a>
-        <a onclick="openCustomize()"><span>🎨</span> Customize</a>
-        <a onclick="toggleMenu()"><span>🏠</span> Home</a>
+        <a href="games.html"><div class="icon icon-games"></div> Games</a>
+        <a href="partners.html"><div class="icon icon-partners"></div> Partners</a>
+        <a href="donators.html"><div class="icon icon-donators"></div> Donators</a>
+        <a onclick="openCustomize()"><div class="icon icon-customize"></div> Customize</a>
+        <a onclick="toggleMenu()"><div class="icon icon-home"></div> Home</a>
     </div>
 
     <div class="logo">GEMINI</div>
 
     <div class="search-wrapper">
-        <input type="text" id="urlInput" placeholder="Enter URL or Search...">
+        <input type="text" id="urlInput" placeholder="SEARCH OR TYPE URL">
         <button id="searchButton" onclick="launch()">GO</button>
     </div>
 
@@ -133,8 +135,8 @@
 
     <div id="customOverlay">
         <div class="customize-panel">
-            <h2 style="margin-top:0;">Color Theme</h2>
-            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-bottom:30px;">
+            <h2 style="margin-top:0; letter-spacing: 3px;">THEMES</h2>
+            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:15px; margin-bottom:40px;">
                 <button class="theme-btn" data-glow="#11111d" onclick="setTheme('#11111d', '#050507')" style="background:radial-gradient(circle, #11111d, #050507);"></button>
                 <button class="theme-btn" data-glow="#0a2b0a" onclick="setTheme('#0a2b0a', '#020a02')" style="background:radial-gradient(circle, #0a2b0a, #020a02);"></button>
                 <button class="theme-btn" data-glow="#2b0a0a" onclick="setTheme('#2b0a0a', '#0a0202')" style="background:radial-gradient(circle, #2b0a0a, #0a0202);"></button>
@@ -142,11 +144,11 @@
                 <button class="theme-btn" data-glow="#1b0a2b" onclick="setTheme('#1b0a2b', '#05020a')" style="background:radial-gradient(circle, #1b0a2b, #05020a);"></button>
                 <button class="theme-btn" data-glow="#0a2b27" onclick="setTheme('#0a2b27', '#020a09')" style="background:radial-gradient(circle, #0a2b27, #020a09);"></button>
             </div>
-            <h2>Background URL</h2>
-            <input type="text" id="bgUrlInput" placeholder="Paste GIF or Image URL..." style="width:100%; padding:10px; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:10px; margin-bottom:10px; box-sizing:border-box;">
-            <button onclick="saveBgUrl()" style="width:100%; padding:10px; background:white; color:black; border-radius:10px; font-weight:900; cursor:pointer; margin-bottom:10px; border:none;">Apply Image</button>
-            <button onclick="clearToDefault()" style="width:100%; padding:10px; background:transparent; color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.2); border-radius:10px; cursor:pointer;">Reset</button>
-            <button onclick="closeCustomize()" style="margin-top:20px; padding:10px 30px; background:white; color:black; border-radius:20px; font-weight:900; border:none; cursor:pointer;">Close</button>
+            <h2 style="letter-spacing: 3px;">CUSTOM BACKDROP</h2>
+            <input type="text" id="bgUrlInput" placeholder="PASTE IMAGE URL..." style="width:100%; padding:15px; background:rgba(255,255,255,0.05); color:white; border:1px solid rgba(255,255,255,0.1); border-radius:10px; margin-bottom:15px;">
+            <button onclick="saveBgUrl()" style="width:100%; padding:15px; background:white; color:black; border-radius:10px; font-weight:900; cursor:pointer; margin-bottom:10px; border:none;">APPLY</button>
+            <button onclick="clearToDefault()" style="width:100%; padding:10px; background:transparent; color:rgba(255,255,255,0.4); border:1px solid rgba(255,255,255,0.1); border-radius:10px; cursor:pointer;">RESET ALL</button>
+            <button onclick="closeCustomize()" style="margin-top:30px; padding:12px 40px; background:white; color:black; border-radius:30px; font-weight:900; border:none; cursor:pointer;">CLOSE</button>
         </div>
     </div>
 
@@ -162,14 +164,12 @@
             constructor() {
                 this.baseX = Math.random() * canvas.width;
                 this.baseY = Math.random() * canvas.height;
-                this.x = this.baseX;
-                this.y = this.baseY;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
+                this.x = this.baseX; this.y = this.baseY;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
             }
             update() {
-                this.baseX += this.vx;
-                this.baseY += this.vy;
+                this.baseX += this.vx; this.baseY += this.vy;
                 if (this.baseX < 0) this.baseX = canvas.width;
                 if (this.baseX > canvas.width) this.baseX = 0;
                 if (this.baseY < 0) this.baseY = canvas.height;
@@ -178,15 +178,14 @@
                 let dx = mouse.x - this.baseX;
                 let dy = mouse.y - this.baseY;
                 let dist = Math.sqrt(dx*dx + dy*dy);
-                let maxDist = 350;
+                let maxDist = 400; // Increased reach
 
                 if (dist < maxDist) {
-                    let pull = Math.pow((maxDist - dist) / maxDist, 2);
-                    this.x = this.baseX + dx * pull * 0.85;
-                    this.y = this.baseY + dy * pull * 0.85;
+                    let pull = Math.pow((maxDist - dist) / maxDist, 2.5);
+                    this.x = this.baseX + dx * pull * 0.9;
+                    this.y = this.baseY + dy * pull * 0.9;
                 } else {
-                    this.x = this.baseX;
-                    this.y = this.baseY;
+                    this.x = this.baseX; this.y = this.baseY;
                 }
             }
         }
@@ -195,8 +194,8 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             nodes = [];
-            // DOUBLED DENSITY: 240 nodes for a 2x thicker web
-            for(let i=0; i<240; i++) nodes.push(new Node());
+            // HIGH DENSITY: 300 nodes for total screen coverage
+            for(let i=0; i<300; i++) nodes.push(new Node());
         }
 
         function drawGrid() {
@@ -208,10 +207,10 @@
                     let dy = nodes[i].y - nodes[j].y;
                     let dist = Math.sqrt(dx*dx + dy*dy);
                     
-                    if(dist < 180) { // Slightly tighter connections for more complex geometry
-                        let alpha = (1 - (dist / 180)) * 0.2;
+                    if(dist < 220) { // Increased link distance
+                        let alpha = (1 - (dist / 220)) * 0.15;
                         ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-                        ctx.lineWidth = 0.7;
+                        ctx.lineWidth = 0.6;
                         ctx.beginPath();
                         ctx.moveTo(nodes[i].x, nodes[i].y);
                         ctx.lineTo(nodes[j].x, nodes[j].y);
@@ -226,7 +225,6 @@
         window.addEventListener('resize', initGrid);
         initGrid(); drawGrid();
 
-        // HUB LOGIC
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
         function openCustomize() { 
             const overlay = document.getElementById('customOverlay');
@@ -249,16 +247,14 @@
             const container = document.getElementById('bg-container');
             const canvasEl = document.getElementById('grid-canvas');
             if (bgUrl) {
-                container.style.backgroundImage = `url(${bgUrl})`;
-                container.style.backgroundSize = 'cover';
+                container.style.backgroundImage = `url(${bgUrl})`; container.style.backgroundSize = 'cover';
                 canvasEl.style.display = 'none';
             } else {
-                container.style.backgroundImage = 'none';
-                canvasEl.style.display = 'block';
+                container.style.backgroundImage = 'none'; canvasEl.style.display = 'block';
             }
         }
 
-        function setTheme(glow, base) { localStorage.setItem('gemini-bg-glow', glow); localStorage.setItem('gemini-bg-base', base); applySettings(); }
+        function setTheme(g, b) { localStorage.setItem('gemini-bg-glow', g); localStorage.setItem('gemini-bg-base', b); applySettings(); }
         function saveBgUrl() { const url = document.getElementById('bgUrlInput').value.trim(); if(url) { localStorage.setItem('gemini-bg-url', url); applySettings(); } }
         function clearToDefault() { localStorage.removeItem('gemini-bg-url'); applySettings(); }
 

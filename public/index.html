@@ -33,7 +33,7 @@
             height: 100vh; width: 100vw; overflow: hidden; color: white;
         }
 
-        /* --- INTENSE GRAVITY GRID --- */
+        /* --- MAX DENSITY GRAVITY GRID --- */
         #grid-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; pointer-events: none;
@@ -46,7 +46,7 @@
             transition: background 0.5s ease;
         }
 
-        /* --- UI ELEMENTS (UNCHANGED) --- */
+        /* --- MENU & SIDEBAR --- */
         #menuBtn { position: fixed; top: 25px; left: 25px; font-size: 30px; cursor: pointer; z-index: 3000; transition: transform 0.2s; }
         #menuBtn:hover { transform: scale(1.1); }
         
@@ -57,10 +57,11 @@
             transform: translateX(-100%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .sidebar.active { transform: translateX(0); }
-        .sidebar a { color: white; text-decoration: none; font-size: 20px; margin-bottom: 25px; opacity: 0.7; transition: 0.3s; display: flex; align-items: center; gap: 15px; }
+        .sidebar a { color: white; text-decoration: none; font-size: 20px; margin-bottom: 25px; opacity: 0.7; transition: 0.3s; display: flex; align-items: center; gap: 15px; cursor: pointer; }
         .sidebar a:hover { opacity: 1; transform: translateX(10px); }
 
-        .logo { font-size: 11vh; font-weight: 900; margin-bottom: 10px; letter-spacing: -5px; pointer-events: none; text-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        /* --- UI ELEMENTS --- */
+        .logo { font-size: 11vh; font-weight: 900; margin-bottom: 10px; letter-spacing: -5px; pointer-events: none; }
 
         .search-wrapper {
             display: flex; width: 55vw; height: 8vh; background: var(--panel-bg);
@@ -75,13 +76,26 @@
         .quick-btn:hover { transform: translateY(-5px); filter: drop-shadow(0 0 8px white); }
         .quick-btn img { width: 100%; height: 100%; object-fit: contain; }
 
-        #customOverlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); z-index: 5000; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
+        /* --- RESTORED CUSTOMIZATION MENU --- */
+        #customOverlay { 
+            display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; 
+            background:rgba(0,0,0,0.8); z-index:5000; 
+            flex-direction:column; align-items:center; justify-content:center; 
+            transition: backdrop-filter 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
         #customOverlay.visible { display: flex; opacity: 1; backdrop-filter: blur(20px); }
-        .customize-panel { background: rgba(15,15,20,0.95); padding: 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); width: 350px; text-align: center; transform: scale(0.8); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        #customOverlay.visible .customize-panel { transform: scale(1); }
+        
+        .customize-panel {
+            background:rgba(15,15,20,0.95); padding:40px; border-radius:30px; 
+            border:1px solid rgba(255,255,255,0.1); width:350px; text-align:center;
+            transform: scale(0.8) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #customOverlay.visible .customize-panel { transform: scale(1) translateY(0); }
 
-        .theme-btn { height: 45px; border-radius: 12px; cursor: pointer; border: 2px solid transparent; }
-        .theme-btn.active { border-color: white; transform: scale(1.1); }
+        .theme-btn { height:45px; border-radius:12px; cursor:pointer; border: 2px solid transparent; transition: 0.2s; }
+        .theme-btn.active { border-color: white; transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.2); }
         
         #iframeWindow { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none; z-index: 3500; background: white; }
         #backBtn { display: none; position: fixed; top: 25px; right: 25px; width: 50px; height: 50px; background: black; border: 1px solid white; border-radius: 50%; color: white; font-size: 24px; align-items: center; justify-content: center; cursor: pointer; z-index: 4000; }
@@ -96,11 +110,11 @@
     <div id="backBtn" onclick="closeBrowser()">←</div>
 
     <div class="sidebar" id="sidebar">
-        <a href="games.html">🎮 Games</a>
-        <a href="partners.html">🤝 Partners</a>
-        <a href="donators.html">💵 Donators</a>
-        <a href="#" onclick="openCustomize()">🎨 Customize</a>
-        <a href="#" onclick="toggleMenu()">🏠 Home</a>
+        <a href="games.html"><span>🎮</span> Games</a>
+        <a href="partners.html"><span>🤝</span> Partners</a>
+        <a href="donators.html"><span>💵</span> Donators</a>
+        <a onclick="openCustomize()"><span>🎨</span> Customize</a>
+        <a onclick="toggleMenu()"><span>🏠</span> Home</a>
     </div>
 
     <div class="logo">GEMINI</div>
@@ -119,15 +133,19 @@
 
     <div id="customOverlay">
         <div class="customize-panel">
-            <h2>Themes</h2>
-            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-bottom:20px;">
-                <button class="theme-btn" data-glow="#11111d" onclick="setTheme('#11111d', '#050507')" style="background: radial-gradient(#11111d, #050507);"></button>
-                <button class="theme-btn" data-glow="#0a2b0a" onclick="setTheme('#0a2b0a', '#020a02')" style="background: radial-gradient(#0a2b0a, #020a02);"></button>
-                <button class="theme-btn" data-glow="#2b0a0a" onclick="setTheme('#2b0a0a', '#0a0202')" style="background: radial-gradient(#2b0a0a, #0a0202);"></button>
+            <h2 style="margin-top:0;">Color Theme</h2>
+            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-bottom:30px;">
+                <button class="theme-btn" data-glow="#11111d" onclick="setTheme('#11111d', '#050507')" style="background:radial-gradient(circle, #11111d, #050507);"></button>
+                <button class="theme-btn" data-glow="#0a2b0a" onclick="setTheme('#0a2b0a', '#020a02')" style="background:radial-gradient(circle, #0a2b0a, #020a02);"></button>
+                <button class="theme-btn" data-glow="#2b0a0a" onclick="setTheme('#2b0a0a', '#0a0202')" style="background:radial-gradient(circle, #2b0a0a, #0a0202);"></button>
+                <button class="theme-btn" data-glow="#0a1b2b" onclick="setTheme('#0a1b2b', '#02050a')" style="background:radial-gradient(circle, #0a1b2b, #02050a);"></button>
+                <button class="theme-btn" data-glow="#1b0a2b" onclick="setTheme('#1b0a2b', '#05020a')" style="background:radial-gradient(circle, #1b0a2b, #05020a);"></button>
+                <button class="theme-btn" data-glow="#0a2b27" onclick="setTheme('#0a2b27', '#020a09')" style="background:radial-gradient(circle, #0a2b27, #020a09);"></button>
             </div>
-            <input type="text" id="bgUrlInput" placeholder="Custom Image URL..." style="width:100%; padding:10px; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:10px; margin-bottom:10px;">
-            <button onclick="saveBgUrl()" style="width:100%; padding:10px; background:white; color:black; border-radius:10px; font-weight:bold; cursor:pointer;">Apply Image</button>
-            <button onclick="clearToDefault()" style="width:100%; margin-top:10px; background:transparent; color:white; border:1px solid white; border-radius:10px; cursor:pointer; padding:5px;">Reset</button>
+            <h2>Background URL</h2>
+            <input type="text" id="bgUrlInput" placeholder="Paste GIF or Image URL..." style="width:100%; padding:10px; background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); border-radius:10px; margin-bottom:10px; box-sizing:border-box;">
+            <button onclick="saveBgUrl()" style="width:100%; padding:10px; background:white; color:black; border-radius:10px; font-weight:900; cursor:pointer; margin-bottom:10px; border:none;">Apply Image</button>
+            <button onclick="clearToDefault()" style="width:100%; padding:10px; background:transparent; color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.2); border-radius:10px; cursor:pointer;">Reset</button>
             <button onclick="closeCustomize()" style="margin-top:20px; padding:10px 30px; background:white; color:black; border-radius:20px; font-weight:900; border:none; cursor:pointer;">Close</button>
         </div>
     </div>
@@ -146,30 +164,26 @@
                 this.baseY = Math.random() * canvas.height;
                 this.x = this.baseX;
                 this.y = this.baseY;
-                // Randomized slow drift
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
             }
             update() {
                 this.baseX += this.vx;
                 this.baseY += this.vy;
-                
-                // Wrap around edges
                 if (this.baseX < 0) this.baseX = canvas.width;
                 if (this.baseX > canvas.width) this.baseX = 0;
                 if (this.baseY < 0) this.baseY = canvas.height;
                 if (this.baseY > canvas.height) this.baseY = 0;
 
-                // Strong Gravity Physics
                 let dx = mouse.x - this.baseX;
                 let dy = mouse.y - this.baseY;
                 let dist = Math.sqrt(dx*dx + dy*dy);
-                let maxDist = 300; // Gravity reach
+                let maxDist = 350;
 
                 if (dist < maxDist) {
-                    let pull = Math.pow((maxDist - dist) / maxDist, 2); // Exponential pull
-                    this.x = this.baseX + dx * pull * 0.8;
-                    this.y = this.baseY + dy * pull * 0.8;
+                    let pull = Math.pow((maxDist - dist) / maxDist, 2);
+                    this.x = this.baseX + dx * pull * 0.85;
+                    this.y = this.baseY + dy * pull * 0.85;
                 } else {
                     this.x = this.baseX;
                     this.y = this.baseY;
@@ -181,13 +195,12 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             nodes = [];
-            // Increased node count for a tighter geometric look
-            for(let i=0; i<120; i++) nodes.push(new Node());
+            // DOUBLED DENSITY: 240 nodes for a 2x thicker web
+            for(let i=0; i<240; i++) nodes.push(new Node());
         }
 
         function drawGrid() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
             for(let i=0; i<nodes.length; i++) {
                 nodes[i].update();
                 for(let j=i+1; j<nodes.length; j++) {
@@ -195,18 +208,10 @@
                     let dy = nodes[i].y - nodes[j].y;
                     let dist = Math.sqrt(dx*dx + dy*dy);
                     
-                    if(dist < 200) {
-                        // Calculate brightness based on distance and mouse proximity
-                        let mouseDx = mouse.x - nodes[i].x;
-                        let mouseDy = mouse.y - nodes[i].y;
-                        let mouseDist = Math.sqrt(mouseDx*mouseDx + mouseDy*mouseDy);
-                        
-                        // Lines glow brighter when sucked in by gravity
-                        let alpha = (1 - (dist / 200)) * 0.2;
-                        if (mouseDist < 300) alpha *= 2.5; 
-
+                    if(dist < 180) { // Slightly tighter connections for more complex geometry
+                        let alpha = (1 - (dist / 180)) * 0.2;
                         ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-                        ctx.lineWidth = 0.8;
+                        ctx.lineWidth = 0.7;
                         ctx.beginPath();
                         ctx.moveTo(nodes[i].x, nodes[i].y);
                         ctx.lineTo(nodes[j].x, nodes[j].y);

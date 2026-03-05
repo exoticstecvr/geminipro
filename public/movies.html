@@ -12,11 +12,11 @@
         :root { --accent: #ffffff; --panel-bg: rgba(10, 10, 15, 0.5); --bg-base: #050507; --bg-glow: #11111d; --sidebar-width: 280px; }
         body { margin: 0; padding: 0; background-color: var(--bg-base); font-family: 'Inter', sans-serif; min-height: 100vh; width: 100vw; color: white; overflow-x: hidden; }
 
-        /* --- BACKGROUND & CANVAS (EXACT HUB STYLE) --- */
+        /* --- BACKGROUND & CANVAS --- */
         #grid-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%); transition: background 0.5s ease; }
 
-        /* --- SIDEBAR (EXACT HUB STYLE) --- */
+        /* --- SIDEBAR (EXACT HUB REPLICA) --- */
         #menuBtn { position: fixed; top: 25px; left: 25px; font-size: 30px; cursor: pointer; z-index: 3000; color: white; }
         .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100%; background: transparent; z-index: 2500; display: flex; flex-direction: column; padding: 60px 30px; box-sizing: border-box; transform: translateX(-100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .sidebar.active { transform: translateX(0); }
@@ -26,7 +26,7 @@
         .icon-box { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .icon-box svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        /* --- AGREEMENT OVERLAY --- */
+        /* --- AGREEMENT --- */
         #agreementOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .agreement-box { background: #0a0a0f; border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; max-width: 600px; width: 90%; max-height: 80vh; display: flex; flex-direction: column; }
         .agreement-content { overflow-y: auto; padding-right: 15px; margin-bottom: 20px; }
@@ -35,7 +35,7 @@
         .agree-btn { background: white; color: black; border: none; padding: 15px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; flex-shrink: 0; }
         .agree-btn:hover { background: #ccc; }
 
-        /* --- MOVIE UI --- */
+        /* --- UI --- */
         .logo-header { padding-top: 80px; text-align: center; }
         .logo { font-size: 10vh; font-weight: 900; letter-spacing: -5px; text-transform: uppercase; margin-bottom: 20px; }
         
@@ -49,15 +49,15 @@
         .card img { width: 100%; height: 270px; object-fit: cover; pointer-events: none; }
         .card h4 { padding: 12px; font-size: 12px; font-weight: 600; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; }
 
-        /* --- CUSTOMIZATION (EXACT HUB STYLE) --- */
+        /* --- CUSTOMIZATION (EXACT 6 COLORS) --- */
         #customOverlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); z-index:5000; flex-direction:column; align-items:center; justify-content:center; opacity: 0; transition: 0.3s; }
         #customOverlay.visible { display: flex; opacity: 1; backdrop-filter: blur(20px); }
         .customize-panel { background:rgba(15,15,20,0.95); padding:40px; border-radius:30px; border:1px solid rgba(255,255,255,0.1); width:400px; text-align:center; }
-        .theme-btn { height:45px; border-radius:12px; cursor:pointer; border: 2px solid transparent; }
+        .theme-btn { height:45px; border-radius:12px; cursor:pointer; border: 2px solid transparent; transition: 0.2s; }
         .theme-btn.active { border-color: white; transform: scale(1.05); }
         .cust-input { width:100%; padding:12px; background:rgba(255,255,255,0.05); color:white; border:1px solid rgba(255,255,255,0.1); border-radius:10px; margin-bottom:10px; box-sizing:border-box; outline: none; }
 
-        /* --- MOVIE PLAYER MODAL --- */
+        /* --- MODAL --- */
         #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
         #modalContent { width: 100%; max-width: 1100px; background: #000; border: 1px solid #333; border-radius: 20px; padding: 25px; position: relative; }
         #iframeWrap { width: 100%; height: 60vh; background: #000; border-radius: 12px; overflow: hidden; }
@@ -72,10 +72,9 @@
             <div class="agreement-content">
                 <h2>Safety & Responsibility</h2>
                 <p>Welcome to Gemini Movies. By accessing this platform, you acknowledge and agree to the following terms:</p>
-                <p><strong>1. Content Hosting:</strong> Gemini Hub does not store, host, or upload any video files, movies, or media content. We provide a clean interface that indexes content from third-party providers.</p>
-                <p><strong>2. External Links:</strong> All media is provided by non-affiliated third-party providers. Clicking on movies may connect you to external streaming services. We recommend the use of an AdBlocker.</p>
-                <p><strong>3. Legal Disclaimer:</strong> The use of this platform is at your own risk. Users are responsible for complying with local laws regarding streaming. Gemini Hub is not liable for any copyright infringement.</p>
-                <p><strong>4. Age Restriction:</strong> You must be at least 18 years of age or have explicit parental consent to use this service. If you do not agree, please leave the site immediately.</p>
+                <p><strong>1. Content Hosting:</strong> Gemini Hub does not store, host, or upload any video files. We provide a clean interface that indexes content from third-party providers.</p>
+                <p><strong>2. External Links:</strong> All media is provided by non-affiliated third-party providers. Clicking on movies may connect you to external streaming services.</p>
+                <p><strong>3. Legal Disclaimer:</strong> The use of this platform is at your own risk. Users are responsible for complying with local laws regarding streaming.</p>
             </div>
             <button class="agree-btn" onclick="acceptAgreement()">I AGREE & UNDERSTAND</button>
         </div>
@@ -90,12 +89,11 @@
         <a href="index.html"><div class="icon-box"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div> Home</a>
         <a href="games.html"><div class="icon-box"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h4M8 10v4M15 11v.01M18 13v.01"></path></svg></div> Play</a>
         <a onclick="toggleMenu()"><div class="icon-box"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></div> Movies</a>
-        
         <a href="partners.html"><div class="icon-box"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div> Partners</a>
         <a href="donators.html"><div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div> Donators</a>
         <div style="height: 1px; background: rgba(255,255,255,0.1); margin: 20px 0;"></div>
         <label>System</label>
-        <a onclick="openCustomize()"><div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 1.65 1.65 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div> Settings</a>
+        <a onclick="openCustomize()"><div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div> Settings</a>
     </div>
 
     <div class="logo-header">
@@ -103,8 +101,8 @@
     </div>
 
     <div class="search-wrapper">
-        <input id="searchInput" placeholder="Search for movies..." onkeydown="if(event.key==='Enter') searchMovies()">
-        <button id="searchButton" onclick="searchMovies()">GO</button>
+        <input id="searchInput" placeholder="Search for movies..." onkeydown="if(event.key==='Enter') startSearch()">
+        <button id="searchButton" onclick="startSearch()">GO</button>
     </div>
 
     <div id="main"></div>
@@ -121,7 +119,7 @@
         </div>
         <h2>Background URL</h2>
         <input type="text" id="bgUrlInput" class="cust-input" placeholder="Paste Image URL...">
-        <button onclick="saveBgUrl()" style="width:100%; padding:10px; background:white; color:black; border-radius:10px; font-weight:900; cursor:pointer; margin-bottom:10px; border:none;">Apply Image</button>
+        <button onclick="saveBgUrl()" style="width:100%; padding:10px; background:white; color:black; border-radius:10px; font-weight:900; border:none; cursor:pointer; margin-bottom:10px;">Apply Image</button>
         <button onclick="clearToDefault()" style="width:100%; padding:10px; background:transparent; color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.2); border-radius:10px; cursor:pointer;">Reset</button>
         <button onclick="closeCustomize()" style="margin-top:20px; padding:10px 30px; background:white; color:black; border-radius:20px; font-weight:900; border:none; cursor:pointer;">Close</button>
     </div></div>
@@ -135,6 +133,11 @@
     </div>
 
     <script>
+        const API_KEY = '3a73619bbb8fc6d47742d1b5b2b707b5';
+        let currentPage = 1;
+        let currentQuery = '';
+        let isFetching = false;
+
         function acceptAgreement() { document.getElementById('agreementOverlay').style.display = 'none'; }
         
         // --- HUB GRID SYSTEM ---
@@ -155,17 +158,25 @@
         function clearToDefault() { localStorage.removeItem('gemini-bg-url'); setTheme('#11111d', '#050507'); }
         function updateButtonHighlight() { const cur = localStorage.getItem('gemini-bg-glow') || '#11111d'; document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-glow') === cur)); }
 
-        // --- MOVIE LOGIC ---
-        const API_KEY = '3a73619bbb8fc6d47742d1b5b2b707b5';
-        async function loadMovies(query = '') {
-            const endpoint = query 
-                ? `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}` 
-                : `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`;
-            const res = await fetch(endpoint);
-            const data = await res.json();
+        // --- MOVIE LOGIC (WITH INFINITE SCROLL) ---
+        async function fetchMovies() {
+            if (isFetching) return;
+            isFetching = true;
+            const endpoint = currentQuery 
+                ? `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(currentQuery)}&page=${currentPage}` 
+                : `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&page=${currentPage}`;
+            try {
+                const res = await fetch(endpoint);
+                const data = await res.json();
+                renderMovies(data.results);
+                currentPage++;
+            } catch (e) { console.error(e); }
+            isFetching = false;
+        }
+
+        function renderMovies(movies) {
             const main = document.getElementById('main');
-            main.innerHTML = '';
-            data.results.forEach(movie => {
+            movies.forEach(movie => {
                 if(!movie.poster_path) return;
                 const card = document.createElement('div');
                 card.className = 'card';
@@ -178,10 +189,22 @@
                 main.appendChild(card);
             });
         }
-        function searchMovies() { loadMovies(document.getElementById('searchInput').value); }
-        document.getElementById('closeModal').onclick = () => { document.getElementById('modal').style.display = 'none'; document.getElementById('modalIframe').src = ''; };
 
-        window.onload = () => { applySettings(); loadMovies(); };
+        function startSearch() {
+            currentQuery = document.getElementById('searchInput').value.trim();
+            currentPage = 1;
+            document.getElementById('main').innerHTML = '';
+            fetchMovies();
+        }
+
+        window.onscroll = function() {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 800) {
+                fetchMovies();
+            }
+        };
+
+        document.getElementById('closeModal').onclick = () => { document.getElementById('modal').style.display = 'none'; document.getElementById('modalIframe').src = ''; };
+        window.onload = () => { applySettings(); fetchMovies(); };
     </script>
 </body>
 </html>

@@ -19,12 +19,20 @@
         #grid-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%); transition: background 0.5s ease; }
         
+        /* Top Date Bar */
+        #date-display { position: fixed; top: 30px; font-size: 14px; font-weight: 600; letter-spacing: 2px; opacity: 0.6; z-index: 3000; text-transform: uppercase; }
+
+        /* Bottom Capsule Bar */
+        .bottom-capsule { position: fixed; bottom: 30px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); padding: 10px 25px; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; gap: 20px; z-index: 3000; font-size: 14px; font-weight: 700; }
+        .capsule-divider { width: 1px; height: 15px; background: rgba(255, 255, 255, 0.2); }
+        .discord-text-link { color: white; text-decoration: none; opacity: 0.8; transition: 0.3s; cursor: pointer; }
+        .discord-text-link:hover { opacity: 1; }
+
         .icon-box { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .icon-box svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         
         #menuBtn { position: fixed; top: 25px; left: 25px; font-size: 30px; cursor: pointer; z-index: 3000; }
         
-        /* Sidebar - Updated to Quick Link Style (Transparent Background) */
         .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100%; background: transparent; z-index: 2500; display: flex; flex-direction: column; padding: 60px 30px; box-sizing: border-box; transform: translateX(-100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .sidebar.active { transform: translateX(0); }
         .sidebar label { font-size: 11px; letter-spacing: 2.5px; opacity: 0.4; margin: 30px 0 20px 0; text-transform: uppercase; font-weight: 700; }
@@ -53,6 +61,17 @@
 <body>
     <div class="bg-container" id="bg-container"></div>
     <canvas id="grid-canvas"></canvas>
+
+    <div id="date-display">--/--/--</div>
+
+    <div class="bottom-capsule">
+        <div id="time-display">00:00:00</div>
+        <div class="capsule-divider"></div>
+        <div id="battery-status">--%</div>
+        <div class="capsule-divider"></div>
+        <a href="https://discord.gg/8kpKkH4y" target="_blank" class="discord-text-link">Discord</a>
+    </div>
+
     <div id="menuBtn" onclick="toggleMenu()">☰</div>
     <div id="backBtn" onclick="closeBrowser()">←</div>
 
@@ -111,6 +130,24 @@
         function openCustomize() { const overlay = document.getElementById('customOverlay'); overlay.style.display = 'flex'; setTimeout(() => overlay.classList.add('visible'), 10); toggleMenu(); }
         function closeCustomize() { const overlay = document.getElementById('customOverlay'); overlay.classList.remove('visible'); setTimeout(() => overlay.style.display = 'none', 300); }
         
+        // --- Added Status Logic (Time, Date, Battery) ---
+        function updateStatus() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const dateStr = now.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            
+            document.getElementById('time-display').innerText = timeStr;
+            document.getElementById('date-display').innerText = dateStr;
+
+            if (navigator.getBattery) {
+                navigator.getBattery().then(batt => {
+                    document.getElementById('battery-status').innerText = Math.round(batt.level * 100) + "%";
+                });
+            }
+        }
+        setInterval(updateStatus, 1000);
+        updateStatus();
+
         function applySettings() { const glow = localStorage.getItem('gemini-bg-glow') || '#11111d'; const base = localStorage.getItem('gemini-bg-base') || '#050507'; const bgUrl = localStorage.getItem('gemini-bg-url'); document.documentElement.style.setProperty('--bg-glow', glow); document.documentElement.style.setProperty('--bg-base', base); if (bgUrl) { document.getElementById('bg-container').style.backgroundImage = `url(${bgUrl})`; document.getElementById('bg-container').style.backgroundSize = 'cover'; document.getElementById('grid-canvas').style.display = 'none'; } else { document.getElementById('bg-container').style.backgroundImage = 'none'; document.getElementById('grid-canvas').style.display = 'block'; } updateButtonHighlight(); }
         function setTheme(g, b) { localStorage.setItem('gemini-bg-glow', g); localStorage.setItem('gemini-bg-base', b); applySettings(); }
         function saveBgUrl() { const url = document.getElementById('bgUrlInput').value.trim(); if(url) { localStorage.setItem('gemini-bg-url', url); applySettings(); } }

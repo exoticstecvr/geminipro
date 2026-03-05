@@ -8,6 +8,10 @@
         body { margin: 0; padding: 0; background-color: var(--bg-base); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; color: white; overflow: hidden; }
         #grid-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%); transition: background 0.5s ease; }
+        
+        .icon-box { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .icon-box svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        
         #menuBtn { position: fixed; top: 25px; left: 25px; font-size: 30px; cursor: pointer; z-index: 3000; }
         .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100%; background: rgba(8, 8, 10, 0.98); backdrop-filter: blur(40px); border-right: 1px solid rgba(255,255,255,0.05); z-index: 2500; display: flex; flex-direction: column; padding: 60px 30px; box-sizing: border-box; transform: translateX(-100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .sidebar.active { transform: translateX(0); }
@@ -17,6 +21,7 @@
         .donator-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px; padding: 40px; text-align: center; width: 350px; backdrop-filter: blur(20px); transition: 0.4s; }
         .donator-logo { width: 100px; height: 100px; margin-bottom: 20px; border-radius: 50%; }
         .visit-btn { margin-top: 20px; padding: 10px 30px; background: white; color: black; border-radius: 20px; font-weight: bold; }
+        
         #customOverlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); z-index:5000; flex-direction:column; align-items:center; justify-content:center; opacity: 0; transition: 0.3s; }
         #customOverlay.visible { display: flex; opacity: 1; backdrop-filter: blur(20px); }
         .customize-panel { background:rgba(15,15,20,0.95); padding:40px; border-radius:30px; border:1px solid rgba(255,255,255,0.1); width:400px; text-align:center; }
@@ -30,15 +35,16 @@
     <div id="menuBtn" onclick="toggleMenu()">☰</div>
     <div class="sidebar" id="sidebar">
         <label>Explore</label>
-        <a href="index.html">🏠 Home</a>
-        <a href="games.html">🎮 Play</a>
-        <a href="movies.html">🎬 Movies</a>
-        <a href="partners.html">🤝 Partners</a>
-        <a onclick="toggleMenu()">💵 Donators</a>
+        <a href="index.html"><div class="icon-box"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div> Home</a>
+        <a href="games.html"><div class="icon-box"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h4M8 10v4M15 11v.01M18 13v.01"></path></svg></div> Play</a>
+        <a href="movies.html"><div class="icon-box"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></div> Movies</a>
+        <a href="partners.html"><div class="icon-box"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div> Partners</a>
+        <a onclick="toggleMenu()"><div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div> Donators</a>
         <div style="height: 1px; background: rgba(255,255,255,0.1); margin: 20px 0;"></div>
         <label>System</label>
-        <a onclick="openCustomize()">⚙️ Settings</a>
+        <a onclick="openCustomize()"><div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div> Settings</a>
     </div>
+
     <h1 style="font-size: 8vh; margin-bottom: 10px; letter-spacing: -4px;">DONATORS</h1>
     <div class="donator-card">
         <img src="https://i1.sndcdn.com/avatars-000085088498-8iecrj-t240x240.jpg" class="donator-logo">
@@ -46,6 +52,7 @@
         <p>Keeping the Gemini Hub alive and thriving.</p>
         <div class="visit-btn">THANK YOU</div>
     </div>
+
     <div id="customOverlay"><div class="customize-panel">
         <h2 style="margin-top:0;">Color Theme</h2>
         <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-bottom:25px;">
@@ -62,6 +69,7 @@
         <button onclick="clearToDefault()" style="width:100%; padding:10px; background:transparent; color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.2); border-radius:10px; cursor:pointer;">Reset</button>
         <button onclick="closeCustomize()" style="margin-top:20px; padding:10px 30px; background:white; color:black; border-radius:20px; font-weight:900; border:none; cursor:pointer;">Close</button>
     </div></div>
+
     <script>
         const canvas = document.getElementById('grid-canvas'); const ctx = canvas.getContext('2d'); let nodes = []; let mouse = { x: -1000, y: -1000 };
         class Node { constructor() { this.baseX = Math.random() * canvas.width; this.baseY = Math.random() * canvas.height; this.x = this.baseX; this.y = this.baseY; this.vx = (Math.random() - 0.5) * 0.4; this.vy = (Math.random() - 0.5) * 0.4; }

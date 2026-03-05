@@ -9,14 +9,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --accent: #ffffff; --bg-base: #050507; --bg-glow: #11111d; --sidebar-width: 280px; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-base); color: white; min-height: 100vh; margin: 0; padding: 0; overflow-x: hidden; }
+        :root { --accent: #ffffff; --panel-bg: rgba(10, 10, 15, 0.5); --bg-base: #050507; --bg-glow: #11111d; --sidebar-width: 280px; }
+        body { margin: 0; padding: 0; background-color: var(--bg-base); font-family: 'Inter', sans-serif; min-height: 100vh; width: 100vw; color: white; overflow-x: hidden; }
 
-        /* --- BACKGROUND & CANVAS --- */
+        /* --- BACKGROUND & CANVAS (EXACT HUB STYLE) --- */
         #grid-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%); transition: background 0.5s ease; }
 
-        /* --- SIDEBAR --- */
+        /* --- SIDEBAR (EXACT HUB STYLE) --- */
         #menuBtn { position: fixed; top: 25px; left: 25px; font-size: 30px; cursor: pointer; z-index: 3000; color: white; }
         .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100%; background: transparent; z-index: 2500; display: flex; flex-direction: column; padding: 60px 30px; box-sizing: border-box; transform: translateX(-100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .sidebar.active { transform: translateX(0); }
@@ -26,43 +26,43 @@
         .icon-box { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .icon-box svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        /* --- LONG SCROLLABLE AGREEMENT --- */
+        /* --- AGREEMENT OVERLAY --- */
         #agreementOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .agreement-box { background: #0a0a0f; border: 1px solid rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; max-width: 600px; width: 90%; max-height: 80vh; display: flex; flex-direction: column; }
-        .agreement-content { overflow-y: auto; padding-right: 15px; text-align: left; margin-bottom: 20px; }
-        .agreement-content h2 { font-weight: 800; margin-top: 0; }
+        .agreement-content { overflow-y: auto; padding-right: 15px; margin-bottom: 20px; }
+        .agreement-content h2 { font-weight: 800; margin-top: 0; text-align: center; }
         .agreement-content p { opacity: 0.7; font-size: 13px; line-height: 1.6; margin-bottom: 15px; }
         .agree-btn { background: white; color: black; border: none; padding: 15px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; flex-shrink: 0; }
-        .agree-btn:hover { background: #ccc; transform: translateY(-2px); }
+        .agree-btn:hover { background: #ccc; }
 
-        /* --- SEARCH & MOVIE UI --- */
-        .logo-header { padding-top: 60px; text-align: center; }
-        .logo { font-size: 7vh; font-weight: 900; letter-spacing: -3px; text-transform: uppercase; }
-        .logo span { color: rgba(255,255,255,0.2); }
+        /* --- MOVIE UI --- */
+        .logo-header { padding-top: 80px; text-align: center; }
+        .logo { font-size: 10vh; font-weight: 900; letter-spacing: -5px; text-transform: uppercase; margin-bottom: 20px; }
+        
+        .search-wrapper { display: flex; width: 60vw; height: 8vh; background: rgba(255,255,255,0.03); backdrop-filter: blur(25px); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin: 0 auto 40px auto; position: relative; z-index: 10; }
+        #searchInput { flex: 1; background: transparent; border: none; outline: none; color: white; padding: 0 30px; font-size: 2.2vh; }
+        #searchButton { width: 8vw; background: white; color: black; border: none; font-weight: 900; cursor: pointer; border-radius: 0 11px 11px 0; }
 
-        .search-wrap { display: flex; width: 100%; max-width: 700px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); margin: 30px auto; overflow: hidden; }
-        #searchInput { flex: 1; background: transparent; border: none; color: white; padding: 15px 25px; font-size: 16px; outline: none; }
-        #ratingSelect { background: rgba(255,255,255,0.05); border: none; color: white; padding: 0 15px; cursor: pointer; border-left: 1px solid rgba(255,255,255,0.1); outline: none; }
+        #main { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; padding: 0 5% 80px 5%; max-width: 1400px; margin: 0 auto; }
+        .card { border-radius: 12px; overflow: hidden; transition: 0.3s; cursor: pointer; background: #000; border: 1px solid rgba(255,255,255,0.05); }
+        .card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.2); }
+        .card img { width: 100%; height: 270px; object-fit: cover; pointer-events: none; }
+        .card h4 { padding: 12px; font-size: 12px; font-weight: 600; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; }
 
-        #main { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; padding: 20px 5% 80px 5%; max-width: 1400px; margin: 0 auto; }
-        .card { border-radius: 10px; overflow: hidden; transition: 0.3s; cursor: pointer; background: #000; border: 1px solid rgba(255,255,255,0.05); }
-        .card:hover { transform: scale(1.03); border-color: rgba(255,255,255,0.3); }
-        .card img { width: 100%; height: 270px; object-fit: cover; }
-        .card h4 { padding: 12px; font-size: 12px; font-weight: 500; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; }
-
-        /* --- CUSTOMIZATION OVERLAY --- */
+        /* --- CUSTOMIZATION (EXACT HUB STYLE) --- */
         #customOverlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); z-index:5000; flex-direction:column; align-items:center; justify-content:center; opacity: 0; transition: 0.3s; }
         #customOverlay.visible { display: flex; opacity: 1; backdrop-filter: blur(20px); }
         .customize-panel { background:rgba(15,15,20,0.95); padding:40px; border-radius:30px; border:1px solid rgba(255,255,255,0.1); width:400px; text-align:center; }
         .theme-btn { height:45px; border-radius:12px; cursor:pointer; border: 2px solid transparent; }
         .theme-btn.active { border-color: white; transform: scale(1.05); }
+        .cust-input { width:100%; padding:12px; background:rgba(255,255,255,0.05); color:white; border:1px solid rgba(255,255,255,0.1); border-radius:10px; margin-bottom:10px; box-sizing:border-box; outline: none; }
 
-        /* --- MODAL --- */
-        #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
-        #modalContent { width: 100%; max-width: 1000px; background: #050507; border: 1px solid #222; border-radius: 15px; padding: 25px; position: relative; }
-        #iframeWrap { width: 100%; height: 55vh; background: #000; border-radius: 8px; overflow: hidden; }
+        /* --- MOVIE PLAYER MODAL --- */
+        #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
+        #modalContent { width: 100%; max-width: 1100px; background: #000; border: 1px solid #333; border-radius: 20px; padding: 25px; position: relative; }
+        #iframeWrap { width: 100%; height: 60vh; background: #000; border-radius: 12px; overflow: hidden; }
         #modalIframe { width:100%; height:100%; border: none; }
-        #closeModal { position: absolute; top: -15px; right: -15px; background: white; color: black; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-weight: 800; }
+        #closeModal { position: absolute; top: -15px; right: -15px; background: white; color: black; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; font-weight: 900; }
     </style>
 </head>
 <body>
@@ -72,10 +72,10 @@
             <div class="agreement-content">
                 <h2>Safety & Responsibility</h2>
                 <p>Welcome to Gemini Movies. By accessing this platform, you acknowledge and agree to the following terms:</p>
-                <p><strong>1. Content Hosting:</strong> Gemini Hub does not store, host, or upload any video files, movies, or media content. We provide a clean interface that indexes content from third-party providers. We have no control over the content hosted on external servers.</p>
-                <p><strong>2. External Links:</strong> All media is provided by non-affiliated third-party providers. Clicking on movies may connect you to external streaming services. We recommend the use of an AdBlocker for the best experience.</p>
-                <p><strong>3. Legal Disclaimer:</strong> The use of this platform is at your own risk. Users are responsible for complying with local laws regarding streaming. Gemini Hub is not liable for any copyright infringement or damages resulting from the use of this index.</p>
-                <p><strong>4. Age Restriction:</strong> You must be at least 18 years of age or have explicit parental consent to use this service. If you do not agree to these terms, please leave the site immediately.</p>
+                <p><strong>1. Content Hosting:</strong> Gemini Hub does not store, host, or upload any video files, movies, or media content. We provide a clean interface that indexes content from third-party providers.</p>
+                <p><strong>2. External Links:</strong> All media is provided by non-affiliated third-party providers. Clicking on movies may connect you to external streaming services. We recommend the use of an AdBlocker.</p>
+                <p><strong>3. Legal Disclaimer:</strong> The use of this platform is at your own risk. Users are responsible for complying with local laws regarding streaming. Gemini Hub is not liable for any copyright infringement.</p>
+                <p><strong>4. Age Restriction:</strong> You must be at least 18 years of age or have explicit parental consent to use this service. If you do not agree, please leave the site immediately.</p>
             </div>
             <button class="agree-btn" onclick="acceptAgreement()">I AGREE & UNDERSTAND</button>
         </div>
@@ -90,25 +90,21 @@
         <a href="index.html"><div class="icon-box"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div> Home</a>
         <a href="games.html"><div class="icon-box"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h4M8 10v4M15 11v.01M18 13v.01"></path></svg></div> Play</a>
         <a onclick="toggleMenu()"><div class="icon-box"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></div> Movies</a>
+        
         <a href="partners.html"><div class="icon-box"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div> Partners</a>
         <a href="donators.html"><div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div> Donators</a>
         <div style="height: 1px; background: rgba(255,255,255,0.1); margin: 20px 0;"></div>
         <label>System</label>
-        <a onclick="openCustomize()"><div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div> Settings</a>
+        <a onclick="openCustomize()"><div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 1.65 1.65 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div> Settings</a>
     </div>
 
     <div class="logo-header">
-        <div class="logo">GEMINI <span>MOVIES</span></div>
+        <div class="logo">GEMINI</div>
     </div>
 
-    <div class="search-wrap">
-        <input id="searchInput" placeholder="Search for movies or TV shows..." onkeyup="searchMovies()">
-        <select id="ratingSelect">
-            <option value="all">ALL</option>
-            <option value="gpg">G/PG</option>
-            <option value="pg13">PG-13</option>
-            <option value="r">R</option>
-        </select>
+    <div class="search-wrapper">
+        <input id="searchInput" placeholder="Search for movies..." onkeydown="if(event.key==='Enter') searchMovies()">
+        <button id="searchButton" onclick="searchMovies()">GO</button>
     </div>
 
     <div id="main"></div>
@@ -119,54 +115,52 @@
             <button class="theme-btn" data-glow="#11111d" onclick="setTheme('#11111d', '#050507')" style="background:radial-gradient(circle, #11111d, #050507);"></button>
             <button class="theme-btn" data-glow="#0a2b0a" onclick="setTheme('#0a2b0a', '#020a02')" style="background:radial-gradient(circle, #0a2b0a, #020a02);"></button>
             <button class="theme-btn" data-glow="#2b0a0a" onclick="setTheme('#2b0a0a', '#0a0202')" style="background:radial-gradient(circle, #2b0a0a, #0a0202);"></button>
+            <button class="theme-btn" data-glow="#2b1a0a" onclick="setTheme('#2b1a0a', '#0f0a05')" style="background:radial-gradient(circle, #2b1a0a, #0f0a05);"></button>
+            <button class="theme-btn" data-glow="#1a0a2b" onclick="setTheme('#1a0a2b', '#0a050f')" style="background:radial-gradient(circle, #1a0a2b, #0a050f);"></button>
+            <button class="theme-btn" data-glow="#0a212b" onclick="setTheme('#0a212b', '#050f15')" style="background:radial-gradient(circle, #0a212b, #050f15);"></button>
         </div>
-        <button onclick="closeCustomize()" style="padding:10px 30px; background:white; color:black; border-radius:20px; font-weight:900; border:none; cursor:pointer;">Close</button>
+        <h2>Background URL</h2>
+        <input type="text" id="bgUrlInput" class="cust-input" placeholder="Paste Image URL...">
+        <button onclick="saveBgUrl()" style="width:100%; padding:10px; background:white; color:black; border-radius:10px; font-weight:900; cursor:pointer; margin-bottom:10px; border:none;">Apply Image</button>
+        <button onclick="clearToDefault()" style="width:100%; padding:10px; background:transparent; color:rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.2); border-radius:10px; cursor:pointer;">Reset</button>
+        <button onclick="closeCustomize()" style="margin-top:20px; padding:10px 30px; background:white; color:black; border-radius:20px; font-weight:900; border:none; cursor:pointer;">Close</button>
     </div></div>
 
     <div id="modal">
         <div id="modalContent">
             <button id="closeModal">×</button>
-            <div id="modalTitle" style="text-align: center; font-weight: 700; margin-bottom: 10px;">Title</div>
+            <div id="modalTitle" style="text-align: center; font-weight: 800; font-size: 20px; margin-bottom: 15px;">Movie Title</div>
             <div id="iframeWrap"><iframe id="modalIframe" allowfullscreen></iframe></div>
         </div>
     </div>
 
     <script>
-        function acceptAgreement() {
-            document.getElementById('agreementOverlay').style.display = 'none';
-        }
+        function acceptAgreement() { document.getElementById('agreementOverlay').style.display = 'none'; }
+        
+        // --- HUB GRID SYSTEM ---
+        const canvas = document.getElementById('grid-canvas'); const ctx = canvas.getContext('2d'); let nodes = []; let mouse = { x: -1000, y: -1000 };
+        class Node { constructor() { this.baseX = Math.random() * canvas.width; this.baseY = Math.random() * canvas.height; this.x = this.baseX; this.y = this.baseY; this.vx = (Math.random() - 0.5) * 0.4; this.vy = (Math.random() - 0.5) * 0.4; }
+            update() { this.baseX += this.vx; this.baseY += this.vy; if (this.baseX < 0) this.baseX = canvas.width; if (this.baseX > canvas.width) this.baseX = 0; if (this.baseY < 0) this.baseY = canvas.height; if (this.baseY > canvas.height) this.baseY = 0; let dx = mouse.x - this.baseX; let dy = mouse.y - this.baseY; let dist = Math.sqrt(dx*dx + dy*dy); if (dist < 400) { let pull = Math.pow((400 - dist) / 400, 2); this.x = this.baseX + dx * pull * 0.9; this.y = this.baseY + dy * pull * 0.9; } else { this.x = this.baseX; this.y = this.baseY; } } }
+        function initGrid() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; nodes = []; for(let i=0; i<250; i++) nodes.push(new Node()); }
+        function drawGrid() { ctx.clearRect(0, 0, canvas.width, canvas.height); for(let i=0; i<nodes.length; i++) { nodes[i].update(); for(let j=i+1; j<nodes.length; j++) { let dist = Math.sqrt(Math.pow(nodes[i].x-nodes[j].x, 2) + Math.pow(nodes[i].y-nodes[j].y, 2)); if(dist < 200) { ctx.strokeStyle = `rgba(255, 255, 255, ${(1-(dist/200))*0.12})`; ctx.lineWidth = 0.6; ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke(); } } } requestAnimationFrame(drawGrid); }
+        window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }); window.addEventListener('resize', initGrid); initGrid(); drawGrid();
 
+        // --- INTERFACE LOGIC ---
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
         function openCustomize() { const overlay = document.getElementById('customOverlay'); overlay.style.display = 'flex'; setTimeout(() => overlay.classList.add('visible'), 10); toggleMenu(); }
         function closeCustomize() { const overlay = document.getElementById('customOverlay'); overlay.classList.remove('visible'); setTimeout(() => overlay.style.display = 'none', 300); }
-        
-        function applySettings() { 
-            const glow = localStorage.getItem('gemini-bg-glow') || '#11111d'; 
-            const base = localStorage.getItem('gemini-bg-base') || '#050507'; 
-            const bgUrl = localStorage.getItem('gemini-bg-url'); 
-            document.documentElement.style.setProperty('--bg-glow', glow); 
-            document.documentElement.style.setProperty('--bg-base', base); 
-            if (bgUrl) { 
-                document.getElementById('bg-container').style.backgroundImage = `url(${bgUrl})`; 
-                document.getElementById('bg-container').style.backgroundSize = 'cover'; 
-                document.getElementById('grid-canvas').style.display = 'none'; 
-            } else { 
-                document.getElementById('bg-container').style.backgroundImage = 'none'; 
-                document.getElementById('grid-canvas').style.display = 'block'; 
-            } 
-        }
+        function applySettings() { const glow = localStorage.getItem('gemini-bg-glow') || '#11111d'; const base = localStorage.getItem('gemini-bg-base') || '#050507'; const bgUrl = localStorage.getItem('gemini-bg-url'); document.documentElement.style.setProperty('--bg-glow', glow); document.documentElement.style.setProperty('--bg-base', base); if (bgUrl) { document.getElementById('bg-container').style.backgroundImage = `url(${bgUrl})`; document.getElementById('bg-container').style.backgroundSize = 'cover'; document.getElementById('grid-canvas').style.display = 'none'; } else { document.getElementById('bg-container').style.backgroundImage = 'none'; document.getElementById('grid-canvas').style.display = 'block'; } updateButtonHighlight(); }
         function setTheme(g, b) { localStorage.setItem('gemini-bg-glow', g); localStorage.setItem('gemini-bg-base', b); applySettings(); }
+        function saveBgUrl() { const url = document.getElementById('bgUrlInput').value.trim(); if(url) { localStorage.setItem('gemini-bg-url', url); applySettings(); } }
+        function clearToDefault() { localStorage.removeItem('gemini-bg-url'); setTheme('#11111d', '#050507'); }
+        function updateButtonHighlight() { const cur = localStorage.getItem('gemini-bg-glow') || '#11111d'; document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-glow') === cur)); }
 
-        const canvas = document.getElementById('grid-canvas'), ctx = canvas.getContext('2d'); let nodes = [];
-        class Node { constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.vx = (Math.random()-0.5)*0.3; this.vy = (Math.random()-0.5)*0.3; } update() { this.x += this.vx; this.y += this.vy; if(this.x<0||this.x>canvas.width)this.vx*=-1; if(this.y<0||this.y>canvas.height)this.vy*=-1; } }
-        function initGrid() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; nodes = Array.from({length: 60}, () => new Node()); }
-        function drawGrid() { ctx.clearRect(0,0,canvas.width,canvas.height); nodes.forEach(n => { n.update(); nodes.forEach(m => { let d = Math.hypot(n.x-m.x, n.y-m.y); if(d<200){ ctx.strokeStyle=`rgba(255,255,255,${(1-d/200)*0.15})`; ctx.beginPath(); ctx.moveTo(n.x,n.y); ctx.lineTo(m.x,m.y); ctx.stroke(); } }); }); requestAnimationFrame(drawGrid); }
-
+        // --- MOVIE LOGIC ---
         const API_KEY = '3a73619bbb8fc6d47742d1b5b2b707b5';
-        let allMovies = [];
-
         async function loadMovies(query = '') {
-            const endpoint = query ? `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}` : `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`;
+            const endpoint = query 
+                ? `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}` 
+                : `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`;
             const res = await fetch(endpoint);
             const data = await res.json();
             const main = document.getElementById('main');
@@ -184,16 +178,10 @@
                 main.appendChild(card);
             });
         }
-
-        function searchMovies() {
-            const query = document.getElementById('searchInput').value;
-            loadMovies(query);
-        }
-
+        function searchMovies() { loadMovies(document.getElementById('searchInput').value); }
         document.getElementById('closeModal').onclick = () => { document.getElementById('modal').style.display = 'none'; document.getElementById('modalIframe').src = ''; };
 
-        window.onload = () => { applySettings(); initGrid(); drawGrid(); loadMovies(); };
-        window.onresize = initGrid;
+        window.onload = () => { applySettings(); loadMovies(); };
     </script>
 </body>
 </html>

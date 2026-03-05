@@ -15,13 +15,13 @@
         }
         body { margin: 0; padding: 0; background-color: var(--bg-base); font-family: 'Inter', sans-serif; display: flex; height: 100vh; width: 100vw; overflow: hidden; color: white; }
         
-        /* Hub Background System */
+        /* --- BACKGROUND SYSTEM --- */
         #grid-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background: radial-gradient(circle at center, var(--bg-glow) 0%, var(--bg-base) 100%); transition: background 0.5s ease; background-size: cover; background-position: center; }
         
-        /* Sidebar System */
+        /* --- SIDEBAR & ICONS --- */
         #menuBtn { position: fixed; top: 25px; left: 25px; font-size: 30px; cursor: pointer; z-index: 3000; }
-        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100%; background: rgba(5,5,7,0.98); backdrop-filter: blur(25px); z-index: 2500; display: flex; flex-direction: column; padding: 60px 30px; box-sizing: border-box; transform: translateX(-100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); border-right: 1px solid rgba(255,255,255,0.05); }
+        .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-width); height: 100%; background: rgba(8, 8, 10, 0.98); backdrop-filter: blur(40px); z-index: 2500; display: flex; flex-direction: column; padding: 60px 30px; box-sizing: border-box; transform: translateX(-100%); transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); border-right: 1px solid rgba(255,255,255,0.05); }
         .sidebar.active { transform: translateX(0); }
         .sidebar label { font-size: 11px; letter-spacing: 2.5px; opacity: 0.4; margin: 30px 0 20px 0; text-transform: uppercase; font-weight: 700; }
         .sidebar a { color: white; text-decoration: none; font-size: 16px; font-weight: 500; margin-bottom: 25px; opacity: 0.7; transition: 0.2s; display: flex; align-items: center; gap: 18px; cursor: pointer; }
@@ -29,43 +29,48 @@
         .icon-box { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .icon-box svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        /* Compact Search */
-        .search-wrapper { display: flex; width: 280px; height: 40px; background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); position: fixed; top: 25px; right: 25px; z-index: 3000; }
-        #query { flex: 1; background: transparent; border: none; outline: none; color: white; padding: 0 20px; font-size: 13px; }
-        #searchButton { width: 50px; background: white; color: black; border: none; font-weight: 900; cursor: pointer; border-radius: 0 50px 50px 0; font-size: 11px; }
+        /* --- SEARCH WRAPPER --- */
+        .search-wrapper { display: flex; width: 300px; height: 45px; background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); position: fixed; top: 25px; right: 25px; z-index: 3000; overflow: hidden; }
+        #query { flex: 1; background: transparent; border: none; outline: none; color: white; padding: 0 20px; font-size: 14px; }
+        #searchButton { width: 60px; background: white; color: black; border: none; font-weight: 900; cursor: pointer; font-size: 12px; }
 
-        /* Music Layout - Responsive Adjustments */
-        #music-sidebar { width: 320px; height: 100%; background: rgba(0,0,0,0.2); border-right: 1px solid rgba(255,255,255,0.03); display: flex; flex-direction: column; padding: 80px 20px 20px; z-index: 10; box-sizing: border-box; }
-        #queue { flex: 1; overflow-y: auto; padding-right: 5px; }
-        .q-item { display: flex; align-items: center; padding: 10px; border-radius: 12px; cursor: pointer; margin-bottom: 8px; background: rgba(255,255,255,0.03); border: 1px solid transparent; }
-        .q-item.active { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.1); }
-        .q-item img { width: 40px; height: 40px; border-radius: 6px; margin-right: 12px; }
+        /* --- MUSIC PLAYER LAYOUT --- */
+        #music-sidebar { width: 320px; height: 100%; background: rgba(0,0,0,0.2); border-right: 1px solid rgba(255,255,255,0.03); display: flex; flex-direction: column; padding: 85px 20px 20px; z-index: 10; box-sizing: border-box; }
+        #queue { flex: 1; overflow-y: auto; }
+        .q-item { display: flex; align-items: center; padding: 12px; border-radius: 15px; cursor: pointer; margin-bottom: 10px; background: rgba(255,255,255,0.03); border: 1px solid transparent; transition: 0.2s; }
+        .q-item:hover { background: rgba(255,255,255,0.06); }
+        .q-item.active { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+        .q-item img { width: 45px; height: 45px; border-radius: 8px; margin-right: 15px; }
 
-        main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 5; box-sizing: border-box; height: 100vh; }
-        #art { width: 30vh; height: 30vh; max-width: 320px; max-height: 320px; min-width: 150px; min-height: 150px; border-radius: 25px; object-fit: cover; margin-bottom: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
+        main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5; }
+        #art { width: 320px; height: 320px; border-radius: 30px; object-fit: cover; margin-bottom: 25px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
         
-        .scrub-box { width: 90%; max-width: 400px; margin-bottom: 15px; }
-        #scrubber { width: 100%; cursor: pointer; accent-color: white; height: 4px; }
-        .time-labels { display: flex; justify-content: space-between; font-size: 10px; opacity: 0.4; margin-top: 8px; font-family: monospace; }
+        .scrub-box { width: 85%; max-width: 450px; margin-bottom: 20px; }
+        #scrubber { width: 100%; cursor: pointer; accent-color: white; height: 4px; border-radius: 2px; }
+        .time-labels { display: flex; justify-content: space-between; font-size: 11px; opacity: 0.4; margin-top: 10px; font-family: monospace; }
 
-        .controls { display: flex; align-items: center; gap: 30px; margin-bottom: 20px; }
-        .c-btn { background: none; border: none; color: white; cursor: pointer; opacity: 0.6; transition: 0.2s; }
+        .controls { display: flex; align-items: center; gap: 35px; margin-bottom: 25px; }
+        .c-btn { background: none; border: none; color: white; cursor: pointer; opacity: 0.6; transition: 0.3s; }
         .c-btn:hover { opacity: 1; transform: scale(1.1); }
-        .play-trigger { width: 60px; height: 60px; background: white; color: black; border-radius: 50%; opacity: 1 !important; display: flex; align-items: center; justify-content: center; }
+        .play-trigger { width: 70px; height: 70px; background: white; color: black; border-radius: 50%; opacity: 1 !important; display: flex; align-items: center; justify-content: center; }
 
-        .vol-box { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 8px 18px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); margin-top: auto; margin-bottom: 20px; }
-        #volume-control { width: 80px; accent-color: white; }
+        .vol-box { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.05); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); }
+        #volume-control { width: 100px; accent-color: white; }
 
-        /* Full Customizer Overlay */
-        #customOverlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); z-index:5000; flex-direction:column; align-items:center; justify-content:center; }
-        .customize-panel { background:rgba(15,15,20,0.98); padding:40px; border-radius:30px; border:1px solid rgba(255,255,255,0.1); width:380px; max-height: 90vh; overflow-y: auto; text-align:center; backdrop-filter: blur(20px); }
-        .theme-btn { height:45px; border-radius:12px; cursor:pointer; border: 2px solid transparent; transition: 0.2s; }
+        /* --- FULL CUSTOMIZE OVERLAY --- */
+        #customOverlay { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); z-index:5000; flex-direction:column; align-items:center; justify-content:center; opacity: 0; transition: 0.3s; }
+        #customOverlay.visible { display: flex; opacity: 1; backdrop-filter: blur(30px); }
+        .customize-panel { background:rgba(15,15,20,0.95); padding:40px; border-radius:35px; border:1px solid rgba(255,255,255,0.1); width:420px; text-align:center; }
+        .theme-btn { height:50px; border-radius:15px; cursor:pointer; border: 2px solid transparent; transition: 0.3s; }
+        .theme-btn.active { border-color: white; transform: scale(1.05); }
 
-        /* Search View */
+        /* --- SEARCH VIEW --- */
         #search-view { position: fixed; inset: 0; background: var(--bg-base); z-index: 4000; display: none; padding: 100px 50px; overflow-y: auto; }
         #search-view.visible { display: block; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; max-width: 1100px; margin: 0 auto; }
-        .card { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 15px; cursor: pointer; text-align: center; border: 1px solid transparent; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; }
+        .card { background: rgba(255,255,255,0.04); padding: 15px; border-radius: 20px; cursor: pointer; text-align: center; border: 1px solid transparent; transition: 0.3s; }
+        .card:hover { background: rgba(255,255,255,0.08); transform: translateY(-5px); border-color: rgba(255,255,255,0.1); }
+        .card img { width: 100%; border-radius: 12px; margin-bottom: 12px; }
 
         #player-engine { display: none; }
     </style>
@@ -77,7 +82,7 @@
     <div id="menuBtn" onclick="toggleMenu()">☰</div>
 
     <div class="search-wrapper">
-        <input type="text" id="query" placeholder="Search tracks..." onkeypress="if(event.key==='Enter') doSearch()">
+        <input type="text" id="query" placeholder="Search track or artist..." onkeypress="if(event.key==='Enter') doSearch()">
         <button id="searchButton" onclick="doSearch()">GO</button>
     </div>
 
@@ -85,8 +90,11 @@
         <label>Explore</label>
         <a href="index.html"><div class="icon-box"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div> Home</a>
         <a href="#"><div class="icon-box"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></div> Music</a>
+        
         <a href="games.html"><div class="icon-box"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h4M8 10v4M15 11v.01M18 13v.01"></path></svg></div> Play</a>
+        
         <a href="partners.html"><div class="icon-box"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div> Partners</a>
+        
         <a href="donators.html"><div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div> Donators</a>
         
         <div style="height: 1px; background: rgba(255,255,255,0.1); margin: 20px 0;"></div>
@@ -95,16 +103,16 @@
     </div>
 
     <aside id="music-sidebar">
-        <label style="font-size: 10px; letter-spacing: 2px; opacity: 0.3; text-transform: uppercase; font-weight: 700; margin-bottom: 15px;">Queue</label>
+        <label style="font-size: 10px; letter-spacing: 2px; opacity: 0.3; text-transform: uppercase; font-weight: 700; margin-bottom: 20px;">Current Queue</label>
         <div id="queue"></div>
         <div id="player-engine"><div id="player"></div></div>
     </aside>
 
     <main>
         <img id="art" src="https://via.placeholder.com/320?text=Gemini+Music">
-        <div style="text-align: center; margin-bottom: 15px;">
-            <h2 id="title" style="margin:0; font-size: clamp(18px, 4vh, 28px); font-weight: 900;">Gemini Music Player</h2>
-            <p id="artist" style="opacity:0.4; margin:5px 0 0; font-size: 14px;">Select a track to start</p>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h2 id="title" style="margin:0; font-size: 28px; font-weight: 900;">Ready</h2>
+            <p id="artist" style="opacity:0.4; margin:8px 0 0; font-size: 16px;">Search to begin streaming</p>
         </div>
 
         <div class="scrub-box">
@@ -116,21 +124,21 @@
         </div>
 
         <div class="controls">
-            <button class="c-btn" onclick="prev()"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"></line></svg></button>
-            <button id="play-pause" class="c-btn play-trigger" onclick="togglePlay()"><svg id="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="black"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
-            <button class="c-btn" onclick="next()"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"></line></svg></button>
+            <button class="c-btn" onclick="prev()"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"></line></svg></button>
+            <button id="play-pause" class="c-btn play-trigger" onclick="togglePlay()"><svg id="play-icon" width="28" height="28" viewBox="0 0 24 24" fill="black"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></button>
+            <button class="c-btn" onclick="next()"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"></line></svg></button>
         </div>
 
         <div class="vol-box">
-            <span style="font-size: 14px;">🔊</span>
+            <span>🔊</span>
             <input type="range" id="volume-control" min="0" max="100" value="100" oninput="updateVolume(this.value)">
         </div>
     </main>
 
     <div id="search-view">
-        <div style="display:flex; justify-content:space-between; margin-bottom: 40px; align-items: center;">
-            <h1 style="font-size: 32px; font-weight: 900;">Music</h1>
-            <button onclick="closeSearch()" style="background:white; color:black; border:none; padding:10px 30px; border-radius:50px; cursor:pointer; font-weight:900;">CLOSE</button>
+        <div style="display:flex; justify-content:space-between; margin-bottom: 50px; align-items: center;">
+            <h1 style="font-size: 40px; font-weight: 900; margin:0;">Results</h1>
+            <button onclick="closeSearch()" style="background:white; color:black; border:none; padding:12px 35px; border-radius:50px; cursor:pointer; font-weight:900;">BACK</button>
         </div>
         <div id="results-grid" class="grid"></div>
     </div>
@@ -142,6 +150,9 @@
                 <button class="theme-btn" data-glow="#11111d" onclick="setTheme('#11111d', '#050507')" style="background:radial-gradient(circle, #11111d, #050507);"></button>
                 <button class="theme-btn" data-glow="#0a2b0a" onclick="setTheme('#0a2b0a', '#020a02')" style="background:radial-gradient(circle, #0a2b0a, #020a02);"></button>
                 <button class="theme-btn" data-glow="#2b0a0a" onclick="setTheme('#2b0a0a', '#0a0202')" style="background:radial-gradient(circle, #2b0a0a, #0a0202);"></button>
+                <button class="theme-btn" data-glow="#2b1a0a" onclick="setTheme('#2b1a0a', '#0f0a05')" style="background:radial-gradient(circle, #2b1a0a, #0f0a05);"></button>
+                <button class="theme-btn" data-glow="#1a0a2b" onclick="setTheme('#1a0a2b', '#0a050f')" style="background:radial-gradient(circle, #1a0a2b, #0a050f);"></button>
+                <button class="theme-btn" data-glow="#0a212b" onclick="setTheme('#0a212b', '#050f15')" style="background:radial-gradient(circle, #0a212b, #050f15);"></button>
             </div>
             <h2>Background URL</h2>
             <input type="text" id="bgUrlInput" placeholder="Paste Image URL..." style="width:100%; padding:12px; background:rgba(255,255,255,0.05); color:white; border:1px solid rgba(255,255,255,0.1); border-radius:10px; margin-bottom:12px; box-sizing:border-box;">
@@ -153,15 +164,7 @@
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // GRID & PERSISTENCE
-        const canvas = document.getElementById('grid-canvas'); const ctx = canvas.getContext('2d'); let nodes = []; let mouse = { x: -1000, y: -1000 };
-        class Node { constructor() { this.baseX = Math.random() * canvas.width; this.baseY = Math.random() * canvas.height; this.x = this.baseX; this.y = this.baseY; this.vx = (Math.random() - 0.5) * 0.4; this.vy = (Math.random() - 0.5) * 0.4; }
-            update() { this.baseX += this.vx; this.baseY += this.vy; if (this.baseX < 0) this.baseX = canvas.width; if (this.baseX > canvas.width) this.baseX = 0; if (this.baseY < 0) this.baseY = canvas.height; if (this.baseY > canvas.height) this.baseY = 0; let dx = mouse.x - this.baseX; let dy = mouse.y - this.baseY; let dist = Math.sqrt(dx*dx + dy*dy); if (dist < 400) { let pull = Math.pow((400 - dist) / 400, 2); this.x = this.baseX + dx * pull * 0.9; this.y = this.baseY + dy * pull * 0.9; } else { this.x = this.baseX; this.y = this.baseY; } } }
-        function initGrid() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; nodes = []; for(let i=0; i<180; i++) nodes.push(new Node()); }
-        function drawGrid() { ctx.clearRect(0, 0, canvas.width, canvas.height); for(let i=0; i<nodes.length; i++) { nodes[i].update(); for(let j=i+1; j<nodes.length; j++) { let dist = Math.sqrt(Math.pow(nodes[i].x-nodes[j].x, 2) + Math.pow(nodes[i].y-nodes[j].y, 2)); if(dist < 200) { ctx.strokeStyle = `rgba(255, 255, 255, ${(1-(dist/200))*0.1})`; ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke(); } } } requestAnimationFrame(drawGrid); }
-        window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }); window.addEventListener('resize', initGrid); initGrid(); drawGrid();
-
-        // FULL CUSTOMIZATION SYSTEM
+        // --- PERSISTENCE & UI ---
         function applySettings() {
             const glow = localStorage.getItem('gemini-bg-glow') || '#11111d';
             const base = localStorage.getItem('gemini-bg-base') || '#050507';
@@ -175,21 +178,31 @@
                 document.getElementById('bg-container').style.backgroundImage = 'none';
                 document.getElementById('grid-canvas').style.display = 'block';
             }
+            updateButtonHighlight();
+        }
+        function updateButtonHighlight() {
+            const cur = localStorage.getItem('gemini-bg-glow') || '#11111d';
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-glow') === cur));
         }
         function setTheme(g, b) { localStorage.setItem('gemini-bg-glow', g); localStorage.setItem('gemini-bg-base', b); applySettings(); }
         function saveBgUrl() { const url = document.getElementById('bgUrlInput').value.trim(); if(url) { localStorage.setItem('gemini-bg-url', url); applySettings(); } }
         function clearToDefault() { localStorage.removeItem('gemini-bg-url'); setTheme('#11111d', '#050507'); }
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
-        function openCustomize() { document.getElementById('customOverlay').style.display = 'flex'; toggleMenu(); }
-        function closeCustomize() { document.getElementById('customOverlay').style.display = 'none'; }
-        window.onload = applySettings;
+        function openCustomize() { const o = document.getElementById('customOverlay'); o.style.display='flex'; setTimeout(()=>o.classList.add('visible'),10); toggleMenu(); }
+        function closeCustomize() { const o = document.getElementById('customOverlay'); o.classList.remove('visible'); setTimeout(()=>o.style.display='none',300); }
 
-        // PLAYER LOGIC
+        // --- BACKGROUND CANVAS ---
+        const canvas = document.getElementById('grid-canvas'); const ctx = canvas.getContext('2d'); let nodes = []; let mouse = { x: -1000, y: -1000 };
+        class Node { constructor() { this.baseX = Math.random() * canvas.width; this.baseY = Math.random() * canvas.height; this.x = this.baseX; this.y = this.baseY; this.vx = (Math.random() - 0.5) * 0.4; this.vy = (Math.random() - 0.5) * 0.4; }
+            update() { this.baseX += this.vx; this.baseY += this.vy; if (this.baseX < 0) this.baseX = canvas.width; if (this.baseX > canvas.width) this.baseX = 0; if (this.baseY < 0) this.baseY = canvas.height; if (this.baseY > canvas.height) this.baseY = 0; let dx = mouse.x - this.baseX; let dy = mouse.y - this.baseY; let dist = Math.sqrt(dx*dx + dy*dy); if (dist < 400) { let pull = Math.pow((400 - dist) / 400, 2); this.x = this.baseX + dx * pull * 0.9; this.y = this.baseY + dy * pull * 0.9; } else { this.x = this.baseX; this.y = this.baseY; } } }
+        function initGrid() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; nodes = []; for(let i=0; i<180; i++) nodes.push(new Node()); }
+        function drawGrid() { ctx.clearRect(0, 0, canvas.width, canvas.height); for(let i=0; i<nodes.length; i++) { nodes[i].update(); for(let j=i+1; j<nodes.length; j++) { let dist = Math.sqrt(Math.pow(nodes[i].x-nodes[j].x, 2) + Math.pow(nodes[i].y-nodes[j].y, 2)); if(dist < 200) { ctx.strokeStyle = `rgba(255, 255, 255, ${(1-(dist/200))*0.12})`; ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke(); } } } requestAnimationFrame(drawGrid); }
+        window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }); window.addEventListener('resize', initGrid); initGrid(); drawGrid();
+
+        // --- MUSIC SEARCH & PLAYER ---
         let player, queue = [], cur = -1;
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '10', width: '10', host: 'https://www.youtube-nocookie.com',
-                playerVars: { 'autoplay': 1, 'controls': 0 },
+            player = new YT.Player('player', { height: '10', width: '10', host: 'https://www.youtube-nocookie.com', playerVars: { 'autoplay': 1, 'controls': 0 },
                 events: { 'onReady': startTimer, 'onStateChange': (e) => {
                     const icon = document.getElementById('play-icon');
                     if(e.data === 1) icon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
@@ -198,11 +211,10 @@
                 }}
             });
         }
-
         async function doSearch() {
             const q = document.getElementById('query').value; if(!q) return;
-            document.getElementById('search-view').classList.add('visible');
-            const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(q)}&entity=song&limit=24`);
+            const view = document.getElementById('search-view'); view.style.display = 'block'; setTimeout(()=>view.classList.add('visible'), 10);
+            const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(q)}&entity=song&limit=30`);
             const data = await res.json();
             const grid = document.getElementById('results-grid'); grid.innerHTML = '';
             data.results.forEach(s => {
@@ -213,43 +225,23 @@
                 grid.appendChild(card);
             });
         }
-
         async function resolveTrack(t, a, img) {
             const res = await fetch(`https://invidious.ducks.party/api/v1/search?q=${encodeURIComponent(t + ' ' + a)}&type=video`);
             const data = await res.json();
             if(data[0]) { queue.push({ title: t, artist: a, art: img, id: data[0].videoId }); updateQueue(); if(cur === -1) play(queue.length - 1); }
         }
-
-        function play(i) {
-            cur = i; const s = queue[i];
-            document.getElementById('art').src = s.art;
-            document.getElementById('title').innerText = s.title;
-            document.getElementById('artist').innerText = s.artist;
-            player.loadVideoById(s.id); updateQueue();
-        }
-
-        function updateQueue() {
-            document.getElementById('queue').innerHTML = queue.map((s, i) => `
-                <div class="q-item ${i===cur?'active':''}" onclick="play(${i})">
-                    <img src="${s.art}">
-                    <div style="overflow:hidden"><div style="font-weight:700;font-size:12px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden">${s.title}</div></div>
-                </div>
-            `).join('');
-        }
-
-        function startTimer() { setInterval(() => { if(player.getCurrentTime) {
-            const c = player.getCurrentTime(), d = player.getDuration();
-            document.getElementById('scrubber').value = (c/d)*100 || 0;
-            document.getElementById('curr-time').innerText = format(c);
-            document.getElementById('dur-time').innerText = format(d);
-        }}, 500); }
+        function play(i) { cur = i; const s = queue[i]; document.getElementById('art').src = s.art; document.getElementById('title').innerText = s.title; document.getElementById('artist').innerText = s.artist; player.loadVideoById(s.id); updateQueue(); }
+        function updateQueue() { document.getElementById('queue').innerHTML = queue.map((s, i) => `<div class="q-item ${i===cur?'active':''}" onclick="play(${i})"><img src="${s.art}"><div style="overflow:hidden"><div style="font-weight:700;font-size:13px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden">${s.title}</div></div></div>`).join(''); }
+        function startTimer() { setInterval(() => { if(player.getCurrentTime) { const c = player.getCurrentTime(), d = player.getDuration(); document.getElementById('scrubber').value = (c/d)*100 || 0; document.getElementById('curr-time').innerText = format(c); document.getElementById('dur-time').innerText = format(d); }}, 500); }
         function format(s) { let m=Math.floor(s/60), r=Math.floor(s%60); return m+":"+(r<10?'0':'')+r; }
         function manualSeek(v) { player.seekTo((v/100)*player.getDuration(), true); }
         function togglePlay() { player.getPlayerState()===1 ? player.pauseVideo() : player.playVideo(); }
         function updateVolume(v) { player.setVolume(v); }
-        function closeSearch() { document.getElementById('search-view').classList.remove('visible'); }
+        function closeSearch() { const v = document.getElementById('search-view'); v.classList.remove('visible'); setTimeout(()=>v.style.display='none',300); }
         function next() { if(cur < queue.length-1) play(cur+1); }
         function prev() { if(cur > 0) play(cur-1); }
+
+        window.onload = applySettings;
     </script>
 </body>
 </html>

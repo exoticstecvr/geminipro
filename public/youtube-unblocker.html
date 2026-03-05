@@ -30,7 +30,7 @@
         .sidebar a { color: white; text-decoration: none; font-size: 16px; font-weight: 500; margin-bottom: 25px; opacity: 0.7; transition: 0.2s; display: flex; align-items: center; gap: 18px; cursor: pointer; }
         .sidebar a:hover { opacity: 1; transform: translateX(5px); }
         
-        .logo { font-size: 3.5vh; font-weight: 700; letter-spacing: 2px; pointer-events: none; text-align: center; opacity: 0.8; text-transform: uppercase; }
+        .logo { font-size: 3.5vh; font-weight: 700; letter-spacing: 2px; pointer-events: none; text-align: center; opacity: 0.8; text-transform: uppercase; margin-top: 20px; }
         
         .search-wrapper { position: fixed; top: 25px; display: flex; width: 50vw; height: 6vh; background: rgba(255,255,255,0.03); backdrop-filter: blur(25px); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); z-index: 2000; }
         #urlInput { flex: 1; background: transparent; border: none; outline: none; color: white; padding: 0 25px; font-size: 1.8vh; }
@@ -41,7 +41,7 @@
         .customize-panel { background:rgba(15,15,20,0.95); padding:40px; border-radius:30px; border:1px solid rgba(255,255,255,0.1); width:400px; text-align:center; }
         .theme-btn { height:45px; border-radius:12px; cursor:pointer; border: 2px solid transparent; }
         .theme-btn.active { border-color: white; transform: scale(1.05); }
-        
+
         #iframeWindow { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none; z-index: 3500; background: white; }
         #backBtn { display: none; position: fixed; top: 25px; right: 25px; width: 55px; height: 55px; background: black; border: 1px solid white; border-radius: 50%; color: white; font-size: 24px; align-items: center; justify-content: center; cursor: pointer; z-index: 4000; }
     </style>
@@ -62,6 +62,7 @@
         
         <a href="partners.html"><div class="icon-box"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div> Partners</a>
         <a href="donators.html"><div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg></div> Donators</a>
+        
         <div style="height: 1px; background: rgba(255,255,255,0.1); margin: 20px 0;"></div>
         <label>System</label>
         <a onclick="openCustomize()"><div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div> Settings</a>
@@ -100,35 +101,25 @@
         function initGrid() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; nodes = []; for(let i=0; i<250; i++) nodes.push(new Node()); }
         function drawGrid() { ctx.clearRect(0, 0, canvas.width, canvas.height); for(let i=0; i<nodes.length; i++) { nodes[i].update(); for(let j=i+1; j<nodes.length; j++) { let dist = Math.sqrt(Math.pow(nodes[i].x-nodes[j].x, 2) + Math.pow(nodes[i].y-nodes[j].y, 2)); if(dist < 200) { ctx.strokeStyle = `rgba(255, 255, 255, ${(1-(dist/200))*0.12})`; ctx.lineWidth = 0.6; ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke(); } } } requestAnimationFrame(drawGrid); }
         window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }); window.addEventListener('resize', initGrid); initGrid(); drawGrid();
-        
+
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
         function openCustomize() { const overlay = document.getElementById('customOverlay'); overlay.style.display = 'flex'; setTimeout(() => overlay.classList.add('visible'), 10); toggleMenu(); }
         function closeCustomize() { const overlay = document.getElementById('customOverlay'); overlay.classList.remove('visible'); setTimeout(() => overlay.style.display = 'none', 300); }
-
-        function applySettings() { const glow = localStorage.getItem('gemini-bg-glow') || '#11111d'; const base = localStorage.getItem('gemini-bg-base') || '#050507'; const bgUrl = localStorage.getItem('gemini-bg-url'); document.documentElement.style.setProperty('--bg-glow', glow); document.documentElement.style.setProperty('--bg-base', base); if (bgUrl) { document.getElementById('bg-container').style.backgroundImage = `url(${bgUrl})`; document.getElementById('bg-container').style.backgroundSize = 'cover'; document.getElementById('grid-canvas').style.display = 'none'; } else { document.getElementById('bg-container').style.backgroundImage = 'none'; document.getElementById('grid-canvas').style.display = 'block'; } updateButtonHighlight(); }
+        function applySettings() { const glow = localStorage.getItem('gemini-bg-glow') || '#11111d'; const base = localStorage.getItem('gemini-bg-base') || '#050507'; const bgUrl = localStorage.getItem('gemini-bg-url'); document.documentElement.style.setProperty('--bg-glow', glow); document.documentElement.style.setProperty('--bg-base', base); if (bgUrl) { document.getElementById('bg-container').style.backgroundImage = `url(${bgUrl})`; document.getElementById('bg-container').style.backgroundSize = 'cover'; document.getElementById('grid-canvas').style.display = 'none'; } else { document.getElementById('bg-container').style.backgroundImage = 'none'; document.getElementById('grid-canvas').style.display = 'block'; } }
         function setTheme(g, b) { localStorage.setItem('gemini-bg-glow', g); localStorage.setItem('gemini-bg-base', b); applySettings(); }
         function saveBgUrl() { const url = document.getElementById('bgUrlInput').value.trim(); if(url) { localStorage.setItem('gemini-bg-url', url); applySettings(); } }
         function clearToDefault() { localStorage.removeItem('gemini-bg-url'); setTheme('#11111d', '#050507'); }
-        function updateButtonHighlight() { const cur = localStorage.getItem('gemini-bg-glow') || '#11111d'; document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-glow') === cur)); }
-        
+
         function launch() { 
             let val = document.getElementById('urlInput').value.trim(); 
             if(val) { 
-                let videoId = "";
-                if (val.includes("v=")) {
-                    videoId = val.split("v=")[1].split("&")[0];
-                } else if (val.includes("youtu.be/")) {
-                    videoId = val.split("youtu.be/")[1].split("?")[0];
-                } else if (val.includes("youtube.com/embed/")) {
-                    videoId = val.split("embed/")[1].split("?")[0];
-                } else {
-                    videoId = val;
-                }
+                let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                let match = val.match(regExp);
+                let videoId = (match && match[2].length === 11) ? match[2] : val;
                 let embedUrl = "https://www.youtube.com/embed/" + videoId;
                 openBrowser(embedUrl); 
             } 
         }
-        
         function openBrowser(url) { document.getElementById('iframeWindow').style.display = "block"; document.getElementById('backBtn').style.display = "flex"; document.getElementById('menuBtn').style.display = "none"; document.getElementById('iframeWindow').src = __uv$config.prefix + __uv$config.encodeUrl(url); }
         function closeBrowser() { document.getElementById('iframeWindow').style.display = "none"; document.getElementById('backBtn').style.display = "none"; document.getElementById('menuBtn').style.display = "block"; document.getElementById('iframeWindow').src = ""; }
         

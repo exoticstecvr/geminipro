@@ -3,15 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Gemini | Hub</title>
-    <script src="/uv/uv.bundle.js"></script>
-    <script src="/uv/uv.config.js"></script>
-    <script>
-    if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-            navigator.serviceWorker.register("/uv/sw.js", { scope: __uv$config.prefix });
-        });
-    }
-    </script>
+    <script src="/scram/scramjet.all.js"></script>
+    <script src="/baremux/index.js"></script>
     <style>
         :root { --accent: #ffffff; --panel-bg: rgba(10, 10, 15, 0.5); --bg-base: #050507; --bg-glow: #11111d; --sidebar-width: 280px; }
         body { margin: 0; padding: 0; background-color: var(--bg-base); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100vw; overflow: hidden; color: white; }
@@ -72,8 +65,8 @@
         <a href="https://discord.gg/8kpKkH4y" target="_blank" class="discord-text-link">Discord</a>
     </div>
 
-    <div id="menuBtn" onclick="toggleMenu()">☰</div>
-    <div id="backBtn" onclick="closeBrowser()">←</div>
+    <div id="menuBtn" onclick="toggleMenu()">&#9776;</div>
+    <div id="backBtn" onclick="closeBrowser()">&#8592;</div>
 
     <div class="sidebar" id="sidebar">
         <label>Explore</label>
@@ -89,6 +82,7 @@
     </div>
 
     <div class="logo">GEMINI</div>
+    <input id="sj-search-engine" value="https://www.google.com/search?q=%s" type="hidden" />
     <div class="search-wrapper"><input type="text" id="urlInput" placeholder="Enter URL or Search..."><button id="searchButton" onclick="launch()">GO</button></div>
     
     <div class="quick-links">
@@ -119,6 +113,7 @@
     <iframe id="iframeWindow"></iframe>
 
     <script>
+        /* ===== Background Grid Animation ===== */
         const canvas = document.getElementById('grid-canvas'); const ctx = canvas.getContext('2d'); let nodes = []; let mouse = { x: -1000, y: -1000 };
         class Node { constructor() { this.baseX = Math.random() * canvas.width; this.baseY = Math.random() * canvas.height; this.x = this.baseX; this.y = this.baseY; this.vx = (Math.random() - 0.5) * 0.4; this.vy = (Math.random() - 0.5) * 0.4; }
             update() { this.baseX += this.vx; this.baseY += this.vy; if (this.baseX < 0) this.baseX = canvas.width; if (this.baseX > canvas.width) this.baseX = 0; if (this.baseY < 0) this.baseY = canvas.height; if (this.baseY > canvas.height) this.baseY = 0; let dx = mouse.x - this.baseX; let dy = mouse.y - this.baseY; let dist = Math.sqrt(dx*dx + dy*dy); if (dist < 400) { let pull = Math.pow((400 - dist) / 400, 2); this.x = this.baseX + dx * pull * 0.9; this.y = this.baseY + dy * pull * 0.9; } else { this.x = this.baseX; this.y = this.baseY; } } }
@@ -126,10 +121,12 @@
         function drawGrid() { ctx.clearRect(0, 0, canvas.width, canvas.height); for(let i=0; i<nodes.length; i++) { nodes[i].update(); for(let j=i+1; j<nodes.length; j++) { let dist = Math.sqrt(Math.pow(nodes[i].x-nodes[j].x, 2) + Math.pow(nodes[i].y-nodes[j].y, 2)); if(dist < 200) { ctx.strokeStyle = `rgba(255, 255, 255, ${(1-(dist/200))*0.12})`; ctx.lineWidth = 0.6; ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke(); } } } requestAnimationFrame(drawGrid); }
         window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; }); window.addEventListener('resize', initGrid); initGrid(); drawGrid();
         
+        /* ===== Sidebar & Customize ===== */
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
         function openCustomize() { const overlay = document.getElementById('customOverlay'); overlay.style.display = 'flex'; setTimeout(() => overlay.classList.add('visible'), 10); toggleMenu(); }
         function closeCustomize() { const overlay = document.getElementById('customOverlay'); overlay.classList.remove('visible'); setTimeout(() => overlay.style.display = 'none', 300); }
         
+        /* ===== Clock / Date / Battery ===== */
         function updateStatus() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -147,16 +144,91 @@
         setInterval(updateStatus, 1000);
         updateStatus();
 
+        /* ===== Theme / Background Settings ===== */
         function applySettings() { const glow = localStorage.getItem('gemini-bg-glow') || '#11111d'; const base = localStorage.getItem('gemini-bg-base') || '#050507'; const bgUrl = localStorage.getItem('gemini-bg-url'); document.documentElement.style.setProperty('--bg-glow', glow); document.documentElement.style.setProperty('--bg-base', base); if (bgUrl) { document.getElementById('bg-container').style.backgroundImage = `url(${bgUrl})`; document.getElementById('bg-container').style.backgroundSize = 'cover'; document.getElementById('grid-canvas').style.display = 'none'; } else { document.getElementById('bg-container').style.backgroundImage = 'none'; document.getElementById('grid-canvas').style.display = 'block'; } updateButtonHighlight(); }
         function setTheme(g, b) { localStorage.setItem('gemini-bg-glow', g); localStorage.setItem('gemini-bg-base', b); applySettings(); }
         function saveBgUrl() { const url = document.getElementById('bgUrlInput').value.trim(); if(url) { localStorage.setItem('gemini-bg-url', url); applySettings(); } }
         function clearToDefault() { localStorage.removeItem('gemini-bg-url'); setTheme('#11111d', '#050507'); }
         function updateButtonHighlight() { const cur = localStorage.getItem('gemini-bg-glow') || '#11111d'; document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-glow') === cur)); }
         
-        function launch() { let val = document.getElementById('urlInput').value.trim(); if(val) { if (!val.includes(".") || val.includes(" ")) val = "https://duckduckgo.com/?q=" + encodeURIComponent(val); else if (!val.startsWith("http")) val = "https://" + val; openBrowser(val); } }
+        /* ===== Scramjet: Service Worker Registration ===== */
+        const stockSW = "./sw.js";
+        const swAllowedHostnames = ["localhost", "127.0.0.1"];
+
+        async function registerSW() {
+            if (!navigator.serviceWorker) {
+                if (location.protocol !== "https:" && !swAllowedHostnames.includes(location.hostname))
+                    throw new Error("Service workers cannot be registered without https.");
+                throw new Error("Your browser doesn't support service workers.");
+            }
+            await navigator.serviceWorker.register(stockSW);
+        }
+
+        /* ===== Scramjet: Search / URL Resolution ===== */
+        function search(input, template) {
+            try { return new URL(input).toString(); } catch (err) {}
+            try {
+                const url = new URL("http://" + input);
+                if (url.hostname.includes(".")) return url.toString();
+            } catch (err) {}
+            return template.replace("%s", encodeURIComponent(input));
+        }
+
+        /* ===== Scramjet: Controller Init ===== */
+        const { ScramjetController } = $scramjetLoadController();
+        const scramjet = new ScramjetController({
+            files: {
+                wasm: "/scram/scramjet.wasm.wasm",
+                all: "/scram/scramjet.all.js",
+                sync: "/scram/scramjet.sync.js",
+            },
+        });
+        scramjet.init();
+
+        const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
+        const searchEngine = document.getElementById("sj-search-engine");
+        let sjFrame = null;
+
+        /* ===== Scramjet: Browser Launch ===== */
+        async function openBrowser(url) {
+            document.getElementById('iframeWindow').style.display = "block";
+            document.getElementById('backBtn').style.display = "flex";
+            document.getElementById('menuBtn').style.display = "none";
+
+            try { await registerSW(); } catch (err) {
+                console.error("Failed to register service worker:", err);
+                return;
+            }
+
+            let wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
+            if ((await connection.getTransport()) !== "/libcurl/index.mjs") {
+                await connection.setTransport("/libcurl/index.mjs", [{ websocket: wispUrl }]);
+            }
+
+            if (!sjFrame) {
+                sjFrame = scramjet.createFrame(document.getElementById('iframeWindow'));
+            }
+            sjFrame.go(url);
+        }
+
+        function launch() {
+            let val = document.getElementById('urlInput').value.trim();
+            if (val) {
+                const url = search(val, searchEngine.value);
+                openBrowser(url);
+            }
+        }
+
         function quickLaunch(url) { openBrowser(url); }
-        function openBrowser(url) { document.getElementById('iframeWindow').style.display = "block"; document.getElementById('backBtn').style.display = "flex"; document.getElementById('menuBtn').style.display = "none"; document.getElementById('iframeWindow').src = __uv$config.prefix + __uv$config.encodeUrl(url); }
-        function closeBrowser() { document.getElementById('iframeWindow').style.display = "none"; document.getElementById('backBtn').style.display = "none"; document.getElementById('menuBtn').style.display = "block"; document.getElementById('iframeWindow').src = ""; }
+
+        function closeBrowser() {
+            document.getElementById('iframeWindow').style.display = "none";
+            document.getElementById('backBtn').style.display = "none";
+            document.getElementById('menuBtn').style.display = "block";
+            if (sjFrame) {
+                sjFrame.go("about:blank");
+            }
+        }
         
         document.getElementById('urlInput').onkeydown = (e) => { if(e.key === 'Enter') launch(); }; 
         window.onload = applySettings;
